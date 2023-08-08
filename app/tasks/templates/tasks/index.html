@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Task history</title>
+</head>
+
+<body>
+    <h1>History</h1>
+
+    {% for garden in gardens %}
+        <h2>{{ garden.name }}</h2>
+    {% endfor %}
+    <form method="POST" action="{% url 'add-garden' %}">
+        {% csrf_token %}
+
+        <input type="text" name="garden-name">
+        <button type="submit">Ajouter</button>
+
+    </form>
+
+</body>
+
+</html>
