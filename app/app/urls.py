@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tasks import views as tasks_views
+from app import views as app_views
+from gardens import views as garden_views
 
 urlpatterns = [
-    path('', tasks_views.index, name='home'),
-    path('add-garden/', tasks_views.add_garden, name='add-garden'),
+    path("", app_views.home_view, name='home'),
+    path('gardens/create/', garden_views.create_garden, name='create-garden'),
     path('admin/', admin.site.urls),
 ]

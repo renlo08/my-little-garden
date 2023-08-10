@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Little Garden</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'create-garden' %}">Create Garden</a>
+    </nav>
+        {% block content %}
+        <h3>This will be replaced</h3>
+        {% endblock content %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if not created %}
+    <form action="." method="POST">
+    {% csrf_token %}
+        <div>
+            <input type="text" name="garden-name" placeholder="Garden Name" >
+        </div>
+        <div>
+            <textarea name="garden-desc" placeholder="Description"></textarea>
+        </div>
+        <button type="submit">Create garden</button>
+    </form>
+
+    {% else %}
+
+        <p>Your garden has been successfully created!</p>
+        <a href="/gardens/{{ object.id }}">{{ object.name }} - {{ object.description }}</a>
+
+    {% endif %}
+{% endblock content %}
