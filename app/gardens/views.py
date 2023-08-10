@@ -14,3 +14,12 @@ def create_garden(request):
         context['object'] = garden_object
         context['created'] = True
     return render(request, 'gardens/create.html', context=context)
+
+def garden_details(request, id: int = None):
+    """
+    Show the details of a garden
+    :param id: the ID of the garden to detail.
+    """
+    garden_obj = Garden.objects.get(id=id) if id is not None else None
+    context = {'object': garden_obj}
+    return render(request, "gardens/details.html", context=context)

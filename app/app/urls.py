@@ -22,5 +22,6 @@ from gardens import views as garden_views
 urlpatterns = [
     path("", app_views.home_view, name='home'),
     path('gardens/create/', garden_views.create_garden, name='create-garden'),
+    path('gardens/<int:id>', garden_views.garden_details, name='details-garden'),
     path('admin/', admin.site.urls),
 ]
