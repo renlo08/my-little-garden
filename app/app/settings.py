@@ -51,6 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'app.urls'
+LOGIN_URL = '/login/'
 
 TEMPLATES = [
     {

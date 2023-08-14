@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from app import views as app_views
 from gardens import views as garden_views
+from accounts import views as account_views
 
 urlpatterns = [
     path("", app_views.home_view, name='home'),
+    path('gardens/', garden_views.garden_search_view, name='search-garden'),
     path('gardens/create/', garden_views.create_garden, name='create-garden'),
     path('gardens/<int:id>', garden_views.garden_details, name='details-garden'),
     path('admin/', admin.site.urls),
+    path('login/',account_views.login_view),
+    path('logout/', account_views.logout_view),
+    path('register/', account_views.register_view)
 ]
