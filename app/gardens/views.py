@@ -7,7 +7,7 @@ from gardens.models import Garden
 
 # Create your views here.
 @login_required
-def create_garden(request):
+def create_garden_view(request):
     """ Create a garden """
     form = GardenForm(request.POST or None)
     context = {
@@ -18,7 +18,7 @@ def create_garden(request):
         context['form'] = GardenForm()
     return render(request, "gardens/create.html", context=context)
 
-def garden_search_view(request):
+def search_garden_view(request):
     """ Search a garden """
     query_dict = request.GET
     try:
@@ -29,11 +29,12 @@ def garden_search_view(request):
     context = {"object": garden_obj}
     return render(request, "gardens/search.html", context=context)
 
-def garden_details(request, id: int = None):
+def garden_details_view(request, _id: int =None):
     """
     Show the details of a garden
-    :param id: the ID of the garden to detail.
+    :param request: the GET request
+    :param _id: the ID of the garden to detail.
     """
-    garden_obj = Garden.objects.get(id=id) if id is not None else None
+    garden_obj = Garden.objects.get(id=_id) if _id is not None else None
     context = {'object': garden_obj}
     return render(request, "gardens/details.html", context=context)
