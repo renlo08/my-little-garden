@@ -3,13 +3,5 @@
 {% block content %}
     <h1>"My Little garden" welcomes you!</h1>
     <p>This is the home view. </p>
-    <ul>
-        {% for garden in garden_list %}
-        	{% if garden.name %}
-                <li><a href="/gardens/{{ garden.id }}/">{{ garden.name }}</a></li>
-            {% endif %}
-        {% endfor %}
-        
-    </ul>
 
 {% endblock content %}

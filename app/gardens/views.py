@@ -18,6 +18,13 @@ def create_garden_view(request):
         context['form'] = GardenForm()
     return render(request, "gardens/create.html", context=context)
 
+def garden_overview_view(request):
+    context = {}
+    garden_qs = Garden.objects.all()
+    context = {
+        'gardens': garden_qs
+    }
+    return render(request, "gardens/garden_overview.html", context=context)
 def search_garden_view(request):
     """ Search a garden """
     query_dict = request.GET

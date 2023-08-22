@@ -22,7 +22,7 @@ from accounts import views as account_views
 
 urlpatterns = [
     path("", app_views.home_view, name='home'),
-    path('gardens/', garden_views.search_garden_view, name='search-garden'),
+    path('gardens/', garden_views.garden_overview_view, name='overview-garden'),
     path('gardens/create/', garden_views.create_garden_view, name='create-garden'),
     path('gardens/<int:_id>/', garden_views.garden_details_view, name='details-garden'),
     path('admin/', admin.site.urls),

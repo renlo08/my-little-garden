@@ -5,12 +5,7 @@
     {% if not created %}
     <form action="." method="POST">
     {% csrf_token %}
-        <div>
-            <input type="text" name="garden-name" placeholder="Garden Name" >
-        </div>
-        <div>
-            <textarea name="garden-desc" placeholder="Description"></textarea>
-        </div>
+        {{ form.as_p }}
         <button type="submit">Create garden</button>
     </form>
 
