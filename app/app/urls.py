@@ -24,7 +24,7 @@ urlpatterns = [
     path("", app_views.home_view, name='home'),
     path('gardens/', garden_views.garden_overview_view, name='overview-garden'),
     path('gardens/create/', garden_views.create_garden_view, name='create-garden'),
-    path('gardens/<int:_id>/', garden_views.garden_details_view, name='details-garden'),
+    path('gardens/<slug:slug>/', garden_views.garden_details_view, name='details-garden'),
     path('admin/', admin.site.urls),
     path('login/',account_views.login_view),
     path('logout/', account_views.logout_view),

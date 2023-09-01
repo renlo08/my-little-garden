@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import Http404
+from django.shortcuts import render, redirect
 
 from gardens.forms import GardenForm
 from gardens.models import Garden
@@ -36,12 +37,37 @@ def search_garden_view(request):
     context = {"object": garden_obj}
     return render(request, "gardens/search.html", context=context)
 
-def garden_details_view(request, _id: int =None):
+def garden_details_view(request, slug=None):
     """
     Show the details of a garden
     :param request: the GET request
-    :param _id: the ID of the garden to detail.
+    :param slug: the slug of the garden to detail.
     """
-    garden_obj = Garden.objects.get(id=_id) if _id is not None else None
-    context = {'object': garden_obj}
+    garden_obj = None
+    if slug is not None:
+        try:
+            garden_obj = Garden.objects.get(slug=slug)
+        except Garden.DoesNotExist:
+            raise Http404
+        except Garden.MultipleObjectsReturned:
+            garden_obj = Garden.objects.filter(slug=slug).first()
+        except:
+            raise Http404
+    context = {
+        "object": garden_obj
+    }
     return render(request, "gardens/details.html", context=context)
+
+def remove_garden(request, slug=None):
+    garden_obj = None
+    if slug is not None:
+        try:
+            garden_obj = Garden.objects.get(slug=slug)
+        except Garden.DoesNotExist:
+            raise Http404
+        except Garden.MultipleObjectsReturned:
+            garden_obj = Garden.objects.filter(slug=slug).first()
+        except:
+            raise Http404
+        garden_obj.delete()
+    return redirect('/gardens')

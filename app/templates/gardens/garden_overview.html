@@ -7,7 +7,7 @@
     <ul>
         {% for garden in gardens %}
         	{% if garden.name %}
-                <li><a href="/gardens/{{ garden.id }}/">{{ garden.name }}</a></li>
+                <li><a href="/gardens/{{ garden.slug }}/">{{ garden.name }}</a></li>
             {% endif %}
         {% endfor %}
 

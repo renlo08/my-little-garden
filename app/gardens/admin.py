@@ -4,6 +4,7 @@ from gardens.models import Garden
 
 # Register your models here.
 class GardenAdmin(admin.ModelAdmin):
-    list_display = ['name', 'description']
+    list_display = ['name', 'description', 'creation', 'updated']
+    search_fields = ['name', 'description']
 
 admin.site.register(Garden, GardenAdmin)
