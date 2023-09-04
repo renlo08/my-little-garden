@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.signals import pre_save, post_save
-from django.urls import reverse
-from django.utils.text import slugify
+
+from gardens.utils import slugify_instance_name
 
 
 # Create your models here.
@@ -20,15 +20,15 @@ class Garden(models.Model):
 
 def garden_pre_save(sender, instance, *args, **kwargs):
     if instance.slug is None:
-        instance.slug = slugify(instance.name)
-    print('pre_save')
-    print(args, kwargs)
+        slugify_instance_name(instance, save=False)
+
 
 pre_save.connect(garden_pre_save, sender=Garden)
 
+
 def garden_post_save(sender, instance, created, *args, **kwargs):
     if created:
-        instance.slug = slugify(instance.name)
-        instance.save()
+        slugify_instance_name(instance, save=True)
+
 
 post_save.connect(garden_post_save, sender=Garden)
