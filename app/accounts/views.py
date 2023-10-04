@@ -12,6 +12,7 @@ def register_view(request):
     context = {'form': form}
     return render(request, "accounts/register.html", context)
 
+
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -21,8 +22,9 @@ def login_view(request):
             return redirect('/')
     else:
         form = AuthenticationForm(request)
-    context= {"form":form}
+    context = {"form": form}
     return render(request, "accounts/login.html", context)
+
 
 def logout_view(request):
     if request.method == "POST":
