@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>My gardens</h1>
+<a href='{% url "gardens:create" %}'>Add Garden</a>
+<ul>
+    {% for x in object_list %}
+        <li><a href='{{ x.get_absolute_url }}'>{{ x.name }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
