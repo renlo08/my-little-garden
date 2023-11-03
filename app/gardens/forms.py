@@ -12,5 +12,5 @@ class GardenForm(forms.ModelForm):
         garden_name = data.get('name')
         qs = Garden.objects.filter(name__icontains=garden_name)
         if qs.exists():
-            self.add_error("Name", f"'{garden_name}' is already in use. Please pick another garden name.")
+            self.add_error("name", f"'{garden_name}' is already in use. Please pick another garden name.")
         return data
