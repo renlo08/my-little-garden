@@ -9,6 +9,8 @@ from gardens.models import Garden
 @login_required
 def garden_list_view(request):
     qs = Garden.objects.filter(user=request.user)
+    if not qs.exists():  # no user garden existing.
+        return garden_create_view(request)
     context = {
         'object_list': qs
     }
@@ -38,14 +40,4 @@ def garden_create_view(request):
     return render(request, 'gardens/create-update.html', context=context)
 
 
-@login_required
-def garden_update_view(request, id=None):
-    obj = get_object_or_404(Garden, id=id, user=request.user)
-    form = GardenForm(request.POST or None, instance=obj)
-    context = {
-        'form': form
-    }
-    if form.is_valid():
-        obj = form.save()
-        context['message'] = 'Data saved.'
-    return render(request, 'gardens/create-update.html', context)
+
