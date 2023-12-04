@@ -40,3 +40,6 @@ class Garden(models.Model):
 
     def get_edit_url(self):
         return reverse('gardens:update', kwargs={'id': self.id})
+
+    def get_delete_url(self):
+        return reverse('gardens:delete', kwargs={'id': self.id})

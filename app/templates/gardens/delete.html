@@ -5,7 +5,7 @@
     {%  if object %}
         <form method="POST" action=".">
         {% csrf_token %}
-        <p>Are sure you want to delete {{ object.name }}</p>
+        <p>Are sure you want to delete '{{ object.name }}'</p>
         <button type="submit">Yes, delete.</button>
         </form>
     {% endif %}
