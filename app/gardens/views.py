@@ -9,6 +9,8 @@ from gardens.models import Garden
 @login_required
 def garden_list_view(request):
     qs = Garden.objects.filter(user=request.user)
+    if not qs.exists():  # no user garden existing.
+        return garden_create_view(request)
     context = {
         'object_list': qs
     }
