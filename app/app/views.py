@@ -4,7 +4,7 @@ from gardens.models import Garden
 
 
 def home_view(request):
-    context={}
+    context = {}
     garden_qs = Garden.objects.all()
     context = {
         'garden_list': garden_qs
