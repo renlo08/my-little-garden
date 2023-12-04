@@ -40,14 +40,4 @@ def garden_create_view(request):
     return render(request, 'gardens/create-update.html', context=context)
 
 
-@login_required
-def garden_update_view(request, id=None):
-    obj = get_object_or_404(Garden, id=id, user=request.user)
-    form = GardenForm(request.POST or None, instance=obj)
-    context = {
-        'form': form
-    }
-    if form.is_valid():
-        obj = form.save()
-        context['message'] = 'Data saved.'
-    return render(request, 'gardens/create-update.html', context)
+
