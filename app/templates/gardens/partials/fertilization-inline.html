@@ -1,5 +1,8 @@
-<div id="fertilization-{{ object.id }}">
-    <p>Il y a {{ object.since_creation_timestamp }}</p>
-    <p>Quantité :{{ object.quantity_as_float }} {{ object.unit }}</p>
+<tr class="fert-{{ object.id }}">
 
-</div>
+    <td>ExempleNom</td>
+    <td>O/C</td>
+    <td>{{ object.since_creation_timestamp }}</td>
+    <td>{{ object.get_quantity }}</td>
+    <td>not implemented</td>
+</tr>

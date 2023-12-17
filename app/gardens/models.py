@@ -52,6 +52,7 @@ class FertilizationInline(models.Model):
     due_date = models.DateTimeField()
     quantity_as_float = models.FloatField(null=True, blank=True)
     unit = models.CharField(max_length=50, validators=[validate_unit_measurement], blank=True, null=True)
+
     # fertilizer = models.ForeignKey(Fertilizer, on_delete=models.SET_NULL, null=True)
 
     def since_creation_timestamp(self):
@@ -59,13 +60,12 @@ class FertilizationInline(models.Model):
         time_difference = current_time - self.due_date
 
         if time_difference < timedelta(hours=1):
-            return "Moins d´une heure"
+            return f"Il y a {time_difference.total_seconds() // 60}min"
         elif time_difference < timedelta(days=1):
             hours = int(time_difference.total_seconds() // 3600)
-            return f"{hours}h"
+            return f"Il y a {hours}h"
         else:
-            days = time_difference.days
-            return f"{days} jours"
+            return f"{self.due_date.strftime('%d.%-m.%y')} ({time_difference.days}j.)"
 
     def convert_to_system(self, system="mks"):
         if self.quantity_as_float is None:
@@ -77,7 +77,13 @@ class FertilizationInline(models.Model):
     def as_mks(self):
         # meter, kilogram, second
         measurement = self.convert_to_system(system='mks')
-        return measurement.to_base_units()
+        return "{:~}".format(measurement.to_base_units())
+
+    def get_quantity(self, system="mks"):
+        if system == "mks":
+            return self.as_mks()
+        elif system == "imperial":
+            return self.as_imperial()
 
     def as_imperial(self):
         # miles, pounds, seconds
