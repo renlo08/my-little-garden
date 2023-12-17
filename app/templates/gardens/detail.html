@@ -5,8 +5,19 @@
         {% if object.get_edit_url %}
             <small>
                 <a href="{{ object.get_edit_url }}">Edit</a>
+                <a href="{{ object.get_delete_url }}">Delete</a>
             </small>
         {% endif %}
     </h1>
+    <div class="garden-desc">
+    <h2>Description du jardin</h2>
     <p>{{ object.description }}</p>
+    </div>
+    <div id="garden-history">
+        <h2>Historique de fertilisation</h2>
+        {% for fertilization in object.get_fertilizations_children %}
+        {% include 'gardens/partials/fertilization-inline.html' with object=fertilization %}
+        {% endfor %}
+
+    </div>
 {% endblock %}
