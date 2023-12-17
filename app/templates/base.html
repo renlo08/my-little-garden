@@ -11,8 +11,10 @@
 </head>
 <body>
     <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'gardens:list' %}">Gardens</a>
+        <a class='nav-cat-1' href="{% url 'home' %}">Home</a>
+        <a class='nav-cat-1' href="{% url 'gardens:list' %}">Jardins</a>
+        <a class='nav-cat-2' href="#">Mes fertilisations</a>
+
     </nav>
         {% block content %}
         <h3>This will be replaced</h3>
