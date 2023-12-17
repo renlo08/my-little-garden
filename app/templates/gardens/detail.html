@@ -15,6 +15,7 @@
     </div>
     <div id="garden-report">
         <h2>Mes Amendements</h2>
+    {% if object.get_fertilizations_children %}
         <table>
             <thead>
             <tr>
@@ -31,4 +32,9 @@
         </table>
 
     </div>
+        {% else %}
+        <div class="empty-div">
+        <p>Aucune données disponible concernant ce jardin.</p>
+        </div>
+    {% endif %}
 {% endblock %}
