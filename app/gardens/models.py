@@ -42,9 +42,7 @@ class Garden(models.Model):
 
     def get_fertilizations_children(self, order='desc'):
         qs = self.fertilizationinline_set.all()
-        if order == 'desc':
-            return qs.order_by('-due_date')
-        return qs.order_by('due_date')
+        return qs.order_by('-due_date') if order == 'desc' else qs.order_by('due_date')
 
 
 class FertilizationInline(models.Model):
@@ -65,14 +63,13 @@ class FertilizationInline(models.Model):
             hours = int(time_difference.total_seconds() // 3600)
             return f"Il y a {hours}h"
         else:
-            return f"{self.due_date.strftime('%d.%-m.%y')} ({time_difference.days}j.)"
+            return f"Il y a {time_difference.days}j.\n({self.due_date.strftime('%d.%-m.%y')})"
 
     def convert_to_system(self, system="mks"):
         if self.quantity_as_float is None:
             return None
         ureg = pint.UnitRegistry(system=system)
-        measurement = self.quantity_as_float * ureg[self.unit.lower()]
-        return measurement
+        return self.quantity_as_float * ureg[self.unit.lower()]
 
     def as_mks(self):
         # meter, kilogram, second
@@ -93,3 +90,10 @@ class FertilizationInline(models.Model):
     def get_nitrogen_quantity(self):
         # TODO: required to add the product percentage
         pass
+
+    def get_edit_url(self):
+        # return reverse()
+        # qs = FertilizationInline.objects.get(garden=)
+        pass
+        # kwargs =
+        # return reverse('gardens/partials/fertilization-form.html', kwargs={'pk': self.pk})

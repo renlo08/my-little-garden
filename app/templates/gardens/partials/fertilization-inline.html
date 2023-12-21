@@ -1,8 +1,15 @@
-<tr class="fert-{{ object.id }}">
+<tr class="amend-{{ object.id }}">
 
-    <td>ExempleNom</td>
+    <td>NomFertilisant</td>
     <td>O/C</td>
     <td>{{ object.since_creation_timestamp }}</td>
     <td>{{ object.get_quantity }}</td>
-    <td>not implemented</td>
-</tr>
+    <td>
+        <!-- HTMX actions with icons -->
+        <i class="fas fa-edit" hx-get="{{ object.get_hx_edit_url }}" hx-target="#dialog-content" hx-swap="innerHTML"
+           hx-trigger="click" hx-select=".dialog-hidden" hx-class="dialog-visible"></i>
+        <i class="fas fa-trash-alt" hx-delete="{{ object.get_delete_url }}"
+           hx-confirm="Voulez-vous vraiment supprimer cette fertilisation?" hx-target=".amend-{{ object.id }}"
+           hx-swap="outerHTML"></i>
+        <!-- Add more actions as needed -->
+    </td>

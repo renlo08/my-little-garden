@@ -3,21 +3,23 @@
 <html lang="en">
 
 <head>
-    {% load static %}
-    <script src="{% static 'js/htmx/htmx.min.js' %}" defer></script>
+    <!-- Include Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://unpkg.com/htmx.org@1.4.0/dist/htmx.min.js"></script>
     <script src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
     <meta charset="UTF-8">
     <title>My Little Garden</title>
 </head>
 <body>
-    <nav>
-        <a class='nav-cat-1' href="{% url 'home' %}">Home</a>
-        <a class='nav-cat-1' href="{% url 'gardens:list' %}">Jardins</a>
-        <a class='nav-cat-2' href="#">Mes fertilisations</a>
+<nav>
+    <a class='nav-cat-1' href="{% url 'home' %}">Home</a>
+    <a class='nav-cat-1' href="{% url 'gardens:list' %}">Jardins</a>
+    <a class='nav-cat-2' href="#">Mes Amendements</a>
+    <a class='nav-cat-1' href="{% url 'logout' %}">Logout</a>
 
-    </nav>
-        {% block content %}
-        <h3>This will be replaced</h3>
-        {% endblock content %}
+</nav>
+{% block content %}
+    <h3>This will be replaced</h3>
+{% endblock content %}
 </body>
 </html>
