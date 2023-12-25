@@ -1,25 +1,28 @@
-{% load django_htmx %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <!-- Include Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://unpkg.com/htmx.org@1.4.0/dist/htmx.min.js"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/debug.js"></script>
     <meta charset="UTF-8">
     <title>My Little Garden</title>
+
+    <!-- Include Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.6.0"></script>
+
 </head>
 <body>
-<nav>
-    <a class='nav-cat-1' href="{% url 'home' %}">Home</a>
-    <a class='nav-cat-1' href="{% url 'gardens:list' %}">Jardins</a>
-    <a class='nav-cat-2' href="#">Mes Amendements</a>
-    <a class='nav-cat-1' href="{% url 'logout' %}">Logout</a>
-
-</nav>
+{% include 'partials/navbar.html' %}
 {% block content %}
     <h3>This will be replaced</h3>
 {% endblock content %}
+
+<script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    })
+</script>
 </body>
 </html>
