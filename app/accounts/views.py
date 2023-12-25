@@ -1,33 +1,24 @@
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 
-# Create your views here.
-def register_view(request):
-    form = UserCreationForm(request.POST or None)
-    if form.is_valid():
-        user_obj = form.save()
-        return redirect('/login')
-    context = {'form': form}
-    return render(request, "accounts/register.html", context)
+class UserLoginView(LoginView):
+    template_name = 'accounts/login.html'
+    # Redirect in settings.
 
 
-def login_view(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('/')
-    else:
-        form = AuthenticationForm(request)
-    context = {"form": form}
-    return render(request, "accounts/login.html", context)
+class UserRegistrationView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'accounts/register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        form.save()  # save the user
+        return super(UserRegistrationView, self).form_valid(form)
 
 
-def logout_view(request):
-    if request.method == "POST":
-        logout(request)
-        return redirect('/login/')
-    return render(request, "accounts/logout.html", {})
+class UserLogoutView(LogoutView):
+    template_name = 'accounts/logout.html'
+    # Redirect in settings.
