@@ -1,15 +1,15 @@
-<tr class="amend-{{ object.id }}">
+<tr hx-target="this" class="amend-{{ amd.id }}" hx-swap="outerHTML">
 
     <td>NomFertilisant</td>
     <td>O/C</td>
-    <td>{{ object.since_creation_timestamp }}</td>
-    <td>{{ object.get_quantity }}</td>
-    <td>
-        <!-- HTMX actions with icons -->
-        <i class="fas fa-edit" hx-get="{{ object.get_hx_edit_url }}" hx-target="#dialog-content" hx-swap="innerHTML"
-           hx-trigger="click" hx-select=".dialog-hidden" hx-class="dialog-visible"></i>
-        <i class="fas fa-trash-alt" hx-delete="{{ object.get_delete_url }}"
-           hx-confirm="Voulez-vous vraiment supprimer cette fertilisation?" hx-target=".amend-{{ object.id }}"
-           hx-swap="outerHTML"></i>
-        <!-- Add more actions as needed -->
-    </td>
+    <td>{{ amd.since_creation_timestamp }}</td>
+    <td>{{ amd.get_quantity }}</td>
+{#    <td>#}
+{#        <!-- HTMX actions with icons -->#}
+{#        <i class="fas fa-edit" hx-get="{{ amd.get_hx_edit_url }}"></i>#}
+{#        <i class="fas fa-trash-alt" hx-delete="{{ amd.get_delete_url }}"#}
+{#           hx-confirm="Voulez-vous vraiment supprimer cette fertilisation?" hx-target=".amend-{{ object.id }}"#}
+{#           hx-swap="outerHTML"></i>#}
+{#        <!-- Add more actions as needed -->#}
+{#    </td>#}
+</tr>

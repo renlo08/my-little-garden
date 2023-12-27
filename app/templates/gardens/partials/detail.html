@@ -1,0 +1,20 @@
+<div>
+    <h2>Description</h2>
+    <p>{{ garden.description }}</p>
+</div>
+
+<div>
+    <table class="amd-table">
+        <thead class="amd-head">
+        <tr>
+            <th>Produit</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Quantité</th>
+        </tr>
+        </thead>
+        {% for amd in  garden.get_amendement_children%}
+            {% include 'gardens/partials/fertilization-inline.html' %}
+        {% endfor %}
+    </table>
+</div>

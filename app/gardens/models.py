@@ -24,7 +24,7 @@ class Fertilizer(models.Model):
 
 
 class Garden(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='gardens')
     name = models.CharField(max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
@@ -40,7 +40,7 @@ class Garden(models.Model):
     def get_delete_url(self):
         return reverse('gardens:delete', kwargs={'id': self.id})
 
-    def get_fertilizations_children(self, order='desc'):
+    def get_amendement_children(self, order='desc'):
         qs = self.fertilizationinline_set.all()
         return qs.order_by('-due_date') if order == 'desc' else qs.order_by('due_date')
 
@@ -91,9 +91,9 @@ class FertilizationInline(models.Model):
         # TODO: required to add the product percentage
         pass
 
-    def get_edit_url(self):
-        # return reverse()
-        # qs = FertilizationInline.objects.get(garden=)
-        pass
-        # kwargs =
-        # return reverse('gardens/partials/fertilization-form.html', kwargs={'pk': self.pk})
+    def get_hx_edit_url(self):
+        kwargs = {
+            'parent_id': self.garden.id,
+            'id': self.id
+        }
+        return reverse('gardens:hx-amendment-detail', kwargs=kwargs)

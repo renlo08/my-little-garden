@@ -1,19 +1,20 @@
 from django.urls import path
 
-from gardens.views import (
-    garden_list_view,
-    garden_detail_view,
-    garden_create_view,
-    garden_update_view,
-    garden_delete_view
-)
+from gardens import views
 
 app_name = 'gardens'
 
 urlpatterns = [
-    path("", garden_list_view, name='list'),
-    path("create/", garden_create_view, name='create'),
-    path("<int:id>/delete/", garden_delete_view, name='delete'),
-    path("<int:id>/edit/", garden_update_view, name='update'),
-    path("<int:id>/", garden_detail_view, name='detail')
+    # path("", garden_list_view, name='list'),
+    path("", views.GardenListView.as_view(), name='list'),
+    path("create/", views.garden_create_view, name='create'),
+    # path("<int:id>/delete/", garden_delete_view, name='delete'),
+    # path("<int:id>/edit/", garden_update_view, name='update'),
+    # path("<int:id>/", garden_detail_view, name='detail'),
 ]
+
+hx_urlpatterns = [
+    path('detail/<int:pk>/', views.detail, name='detail'),
+]
+
+urlpatterns += hx_urlpatterns
