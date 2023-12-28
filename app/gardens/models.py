@@ -40,7 +40,7 @@ class Garden(models.Model):
     def get_delete_url(self):
         return reverse('gardens:delete', kwargs={'id': self.id})
 
-    def get_amendement_children(self, order='desc'):
+    def get_amendment_children(self, order='desc'):
         qs = self.fertilizationinline_set.all()
         return qs.order_by('-due_date') if order == 'desc' else qs.order_by('due_date')
 

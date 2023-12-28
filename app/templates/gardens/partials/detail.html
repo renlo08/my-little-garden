@@ -3,18 +3,24 @@
     <p>{{ garden.description }}</p>
 </div>
 
-<div>
-    <table class="amd-table">
-        <thead class="amd-head">
-        <tr>
-            <th>Produit</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Quantité</th>
-        </tr>
-        </thead>
-        {% for amd in  garden.get_amendement_children%}
-            {% include 'gardens/partials/fertilization-inline.html' %}
-        {% endfor %}
-    </table>
-</div>
+    <div>
+    <h2>Historique des amendments</h2>
+{% if garden.get_amendment_children %}
+
+        <table class="amd-table">
+            <thead class="amd-head">
+            <tr>
+                <th>Produit</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Quantité</th>
+            </tr>
+            </thead>
+            {% for amd in garden.get_amendement_children %}
+                {% include 'gardens/partials/fertilization-inline.html' %}
+            {% endfor %}
+        </table>
+{% else %}
+    <p>Aucune données trouvées.</p>
+{% endif %}
+    </div>
