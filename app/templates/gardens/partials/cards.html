@@ -4,23 +4,18 @@
         <span>Click on 'Add Garden' to create your first garden</span>
     </div>
 {% else %}
-    <div class="htmx-indicator">Updating...</div>
-{#    <ul>#}
-        {% for garden in gardens %}
-            <!-- Garden card -->
-            <div class='garden-card cursor-pointer' id='garden-card-{{ garden.pk }}'>
-                <div>
-                    <span>{{ garden.name }}</span>
-                    <span>{{ garden.description }}</span>
-                </div>
+
+    {% for garden in gardens %}
+        <!-- Garden card -->
+        <div class='garden-card hover:shadow-lg'
+             data-url={{ garden.get_absolute_url }}>
+            <img src="https://picsum.photos/id/110/100"
+                 alt="card-picture"
+                 class="h-20 sm:h-32 w-full object-cover">
+            <div class="m-4">
+                <span class="font-bold truncate block">{{ garden.name }}</span>
+                <span class="block text-gray-500 text-sm">{{ garden.description }}</span>
             </div>
-{#            <li class="list-group-item">#}
-{#                <a style="cursor: pointer;"#}
-{#                   hx-get="{% url 'gardens:detail' garden.pk %}"#}
-{#                   hx-target="#garden-detail">#}
-{#                    {{ garden.name }}#}
-{#                </a>#}
-{#            </li>#}
-        {% endfor %}
-{#    </ul>#}
+        </div>
+    {% endfor %}
 {% endif %}

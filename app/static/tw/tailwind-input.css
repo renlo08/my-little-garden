@@ -3,3 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.garden-card{
+  @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
+}

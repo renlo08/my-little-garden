@@ -1,9 +1,9 @@
 {% load static %}
 
-<nav class="text-right">
+<nav class="text-left">
 
     <div id="navbarNav">
-        <ul class="navbar-nav ml-auto">
+        <ul>
             {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'gardens:list' %}">Gardens</a>

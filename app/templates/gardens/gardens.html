@@ -2,43 +2,36 @@
 {% load static %}
 
 {% block content %}
-    <main>
-        <article>
-            <h1>Mes Jardins</h1>
-
-            <div id=garden-cards class="mt-8 grid lg:grid-cols-3 gap-10">
-                {% include 'gardens/partials/cards.html' %}
-                <!-- Garden cards -->
-                <div>
-                    <div>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </div>
-
-            </div>
-        </article>
+    <main class="ml-4 mr-4">
+        <h1 class="flex justify-center m-2 p-4 font-bold text-3xl border-b-2 uppercase">
+            Mes Jardins
+        </h1>
+    <div class="htmx-indicator">Updating...</div>
+        <div class="mt-4 grid sm:grid-cols-4 gap-10">
+            <!-- Garden cards -->
+            {% include 'gardens/partials/cards.html' %}
+        </div>
     </main>
 
     <aside>
         {#    TODO: Will contains the information related to the user#}
     </aside>
 
-{#    <div>#}
-{#        <h1>My gardens</h1>#}
-{#    </div>#}
-{#    <section>#}
-{#        <div hx-get="{% url 'gardens:create' %}" hx-trigger="load" hx-target="this">#}
-{#        </div>#}
-{#        <div>#}
-{#            <!-- Garden List -->#}
-{#        </div>#}
-{#    </section>#}
-{#    <!-- Garden Edit -->#}
-{#    <section class="garden-section">#}
-        {#        Garden Details#}
-{#        <div id="garden-update-create"></div>#}
-{#    </section>#}
+    {#    <div>#}
+    {#        <h1>My gardens</h1>#}
+    {#    </div>#}
+    {#    <section>#}
+    {#        <div hx-get="{% url 'gardens:create' %}" hx-trigger="load" hx-target="this">#}
+    {#        </div>#}
+    {#        <div>#}
+    {#            <!-- Garden List -->#}
+    {#        </div>#}
+    {#    </section>#}
+    {#    <!-- Garden Edit -->#}
+    {#    <section class="garden-section">#}
+    {#        Garden Details#}
+    {#        <div id="garden-update-create"></div>#}
+    {#    </section>#}
 
     <!-- Add popup to edit -->
     <script src="{% static 'js/custom/gardens.js' %}"></script>

@@ -32,7 +32,7 @@ class Garden(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
-        return reverse('gardens:detail', kwargs={'id': self.id})
+        return reverse('gardens:detail', kwargs={'pk': self.pk})
 
     def get_edit_url(self):
         return reverse('gardens:update', kwargs={'id': self.id})
