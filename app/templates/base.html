@@ -13,6 +13,9 @@
     <!-- Tailwind CSS -->
     {% include 'head/css.html' %}
 
+    <!-- JQuery -->
+    {% include 'head/jquery.html' %}
+
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.6.0"></script>
 
@@ -20,14 +23,26 @@
 </head>
 <body class="text-gray-600 font-body bg-gray-50">
 
-<header class="bg-gray-400">
+<header class="bg-white">
+    <!-- Logo-->
+    <a href="{% url 'home' %}">
+        <img class="w-36 rounded-full"
+             src="{% static 'img/logo.png' %}"
+             alt="MyLittleGarden">
+    </a>
+    <!-- Navbar -->
     {% include 'partials/navbar.html' %}
+
 </header>
-<main>
-    {% block content %}
-        <h3>This will be replaced</h3>
-    {% endblock content %}
-</main>
+
+<!-- main and page content -->
+{% block content %}
+    <h3>This will be replaced</h3>
+{% endblock content %}
+
+<footer></footer>
+
+
 <script>
     document.body.addEventListener('htmx:configRequest', (event) => {
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';

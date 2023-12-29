@@ -22,6 +22,7 @@ class FertilizationForm(forms.ModelForm):
         model = FertilizationInline
         fields = ['due_date', 'quantity_as_float', 'unit']
 
+
 class GardenForm(forms.ModelForm):
     class Meta:
         model = Garden

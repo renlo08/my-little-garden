@@ -1,3 +1,6 @@
+<div class="nav-button">
+    <a href="{% url 'gardens:list' %}"><button>Back</button></a>
+</div>
 <div>
     <h2>Description</h2>
     <p>{{ garden.description }}</p>
@@ -16,7 +19,7 @@
                 <th>Quantité</th>
             </tr>
             </thead>
-            {% for amd in garden.get_amendement_children %}
+            {% for amd in garden.get_amendment_children %}
                 {% include 'gardens/partials/fertilization-inline.html' %}
             {% endfor %}
         </table>

@@ -1,0 +1,26 @@
+{% if not gardens.exists %}
+    <div>
+        <span>You do not have any garden yet.</span>
+        <span>Click on 'Add Garden' to create your first garden</span>
+    </div>
+{% else %}
+    <div class="htmx-indicator">Updating...</div>
+{#    <ul>#}
+        {% for garden in gardens %}
+            <!-- Garden card -->
+            <div class='garden-card cursor-pointer' id='garden-card-{{ garden.pk }}'>
+                <div>
+                    <span>{{ garden.name }}</span>
+                    <span>{{ garden.description }}</span>
+                </div>
+            </div>
+{#            <li class="list-group-item">#}
+{#                <a style="cursor: pointer;"#}
+{#                   hx-get="{% url 'gardens:detail' garden.pk %}"#}
+{#                   hx-target="#garden-detail">#}
+{#                    {{ garden.name }}#}
+{#                </a>#}
+{#            </li>#}
+        {% endfor %}
+{#    </ul>#}
+{% endif %}

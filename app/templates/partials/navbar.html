@@ -1,9 +1,7 @@
 {% load static %}
 
 <nav class="text-right">
-    <a href="{% url 'home' %}">
-        <img class="w-24 rounded-full" src="{% static 'img/logo.png' %}" alt="MyLittleGarden">
-    </a>
+
     <div id="navbarNav">
         <ul class="navbar-nav ml-auto">
             {% if user.is_authenticated %}

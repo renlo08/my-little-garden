@@ -2,19 +2,19 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView
+from django.views.generic import ListView, CreateView
 
 from gardens.forms import GardenForm, FertilizationForm
 from gardens.models import Garden, FertilizationInline
 
 
-@login_required
-def garden_list_view(request):
-    qs = Garden.objects.filter(user=request.user)
-    context = {
-        'object_list': qs
-    }
-    return render(request, 'gardens/partials/list.html', context=context)
+class GardenFormView(CreateView):
+    template_name = 'gardens/partials/create.html'
+    form_class = GardenForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 @login_required
@@ -119,7 +119,7 @@ def garden_amendment_update_hx_view(request, parent_id=None, id=None):
 
 
 class GardenListView(ListView):
-    template_name = 'gardens/index.html'
+    template_name = 'gardens/gardens.html'
     model = Garden
     context_object_name = 'gardens'
 
