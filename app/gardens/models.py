@@ -24,7 +24,7 @@ class Fertilizer(models.Model):
 
 
 class Garden(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='gardens')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='gardens')
     name = models.CharField(max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
