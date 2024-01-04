@@ -19,7 +19,7 @@ class GardenFormView(CreateView):
 
 @login_required
 def garden_detail_view(request, id=None):
-    obj = get_object_or_404(Garden, id=id, user=request.user)
+    obj = get_object_or_404(Garden, id=id, created_by=request.user)
     context = {
         "object": obj
     }
@@ -34,7 +34,7 @@ def garden_create_view(request):
     }
     if form.is_valid():
         obj = form.save(commit=False)
-        obj.user = request.user
+        obj.created_by = request.user
         obj.save()
         return redirect(obj.get_absolute_url())
     return render(request, 'gardens/create-update.html', context=context)
@@ -42,7 +42,7 @@ def garden_create_view(request):
 
 @login_required
 def garden_update_view(request, id=None):
-    obj = get_object_or_404(Garden, id=id, user=request.user)
+    obj = get_object_or_404(Garden, id=id, created_by=request.user)
     form = GardenForm(request.POST or None, instance=obj)
     context = {
         "form": form,
@@ -57,7 +57,7 @@ def garden_update_view(request, id=None):
 @login_required
 def garden_delete_view(request, id=None):
     try:
-        obj = Garden.objects.get(id=id, user=request.user)
+        obj = Garden.objects.get(id=id, created_by=request.user)
     except:
         obj = None
     if obj is None:
@@ -78,7 +78,7 @@ def amendment_update_view(request, garden_slug:str = None, id: int=None):
         raise Http404("HTMX requesst not found.")
 
     try:
-        garden = Garden.objects.get(slug__exact=garden_slug, user=request.user)
+        garden = Garden.objects.get(slug__exact=garden_slug, created_by=request.user)
     except Garden.DoesNotExist:
         raise Http404("Garden not found.")
 
@@ -97,7 +97,7 @@ def garden_amendment_update_hx_view(request, parent_id=None, id=None):
 
     # Retrieve the Garden instance
     try:
-        parent_obj = Garden.objects.get(id=parent_id, user=request.user)
+        parent_obj = Garden.objects.get(id=parent_id, created_by=request.user)
     except Garden.DoesNotExist:
         raise Http404("Garden not found")
 
@@ -133,5 +133,5 @@ class GardenListView(ListView):
 
 @login_required
 def detail(request, pk: int):
-    garden = get_object_or_404(Garden, pk=pk, user=request.user)
+    garden = get_object_or_404(Garden, pk=pk, created_by=request.user)
     return render(request, 'gardens/partials/detail.html', {'garden': garden})
