@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 from django.views.generic import ListView, CreateView
 
 from gardens.forms import GardenForm, FertilizationForm
@@ -52,25 +51,6 @@ def garden_update_view(request, id=None):
         form.save()
         context['message'] = 'Data saved.'
     return render(request, "gardens/create-update.html", context)
-
-
-@login_required
-def garden_delete_view(request, id=None):
-    try:
-        obj = Garden.objects.get(id=id, created_by=request.user)
-    except:
-        obj = None
-    if obj is None:
-        raise Http404
-    if request.method == "POST":
-        obj.delete()
-        success_url = reverse('gardens:list')
-        return redirect(success_url)
-    context = {
-        "object": obj
-    }
-    return render(request, "gardens/delete.html", context)
-
 
 @login_required
 def amendment_update_view(request, garden_slug:str = None, id: int=None):
@@ -124,14 +104,28 @@ class GardenListView(ListView):
     context_object_name = 'gardens'
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_authenticated:
-            return user.gardens.all()
-        else:
-            return Garden.objects.none()
+        return _get_all_user_garden(self.request)
 
+def _get_all_user_garden(request):
+    user = request.user
+    if user.is_authenticated:
+        return user.gardens.all()
+    else:
+        return Garden.objects.none()
 
 @login_required
 def detail(request, pk: int):
     garden = get_object_or_404(Garden, pk=pk, created_by=request.user)
     return render(request, 'gardens/partials/detail.html', {'garden': garden})
+
+
+@login_required
+def garden_delete_view(request, pk: int):
+    if not request.htmx:
+        raise Http404('Delete Garden is not HTMX requested. Invalid request')
+    garden = get_object_or_404(Garden, pk=pk, created_by=request.user)
+    if request.method == 'POST':
+        garden.delete()
+        context = {'gardens': _get_all_user_garden(request)}
+        return render(request, "gardens/partials/cards.html", context)
+    return render(request, "gardens/delete.html", {"garden": garden})
