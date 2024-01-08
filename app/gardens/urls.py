@@ -15,6 +15,7 @@ urlpatterns = [
 
 htmx_urlpatterns = [
     path('delete/<int:pk>/', views.garden_delete_view, name='delete'),
+    path('update/<int:pk>/', views.GardenUpdateView.as_view(), name='update'),
     path('detail/<int:pk>/', views.detail, name='detail'),
     path('create/', views.GardenFormView.as_view(), name='create'),
 ]

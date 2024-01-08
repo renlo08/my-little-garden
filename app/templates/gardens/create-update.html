@@ -1,18 +1,26 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
     {% if message %}
-    	<p>{{ message }}</p>
+        <p>{{ message }}</p>
     {% endif %}
-    <div>
-    <button hx-get="{% url "gardens:list" %}" hx-target="" hx-swap="innerHTML">Back to list</button>
-    </div>
-    <div>
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-        </form>
-    </div>
+
+    <main class="grid grid-cols-1 place-items-center">
+        <div class="justify-center w-7/12 h-full">
+            <div class="bg-green-600 mb-3">
+                <p>Placeholder for foto and more</p>
+            </div>
+
+            <div class="bg-gray-500">
+                <form method="post">{% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Update">
+                </form>
+            </div>
+        </div>
+    </main>
+
 {% endblock %}

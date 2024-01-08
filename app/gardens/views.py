@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView
 
 from gardens.forms import GardenForm, FertilizationForm
 from gardens.models import Garden, FertilizationInline
@@ -129,3 +131,10 @@ def garden_delete_view(request, pk: int):
         context = {'gardens': _get_all_user_garden(request)}
         return render(request, "gardens/partials/cards.html", context)
     return render(request, "gardens/delete.html", {"garden": garden})
+
+
+class GardenUpdateView(LoginRequiredMixin, UpdateView):
+    model = Garden
+    fields = ['name', 'description']
+    template_name = 'gardens/create-update.html'
+    success_url = reverse_lazy('gardens:list')
