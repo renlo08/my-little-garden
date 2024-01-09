@@ -1,18 +1,49 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block content %}
 
     {% if message %}
-    	<p>{{ message }}</p>
+        <p>{{ message }}</p>
     {% endif %}
-    <div>
-    <button hx-get="{% url "gardens:list" %}" hx-target="" hx-swap="innerHTML">Back to list</button>
-    </div>
-    <div>
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-        </form>
-    </div>
+
+    <main class="grid grid-cols-1 place-items-center">
+        <div class="justify-center w-5/12 h-full text-sm">
+            <div class="grid grid-cols-3 bg-green-600 mb-3 mt-3 text-white p-2">
+
+                <a class="cursor-pointer" href="{% url 'gardens:list' %}">
+                    <svg class="w-5 h-5" data-slot="icon" fill="currentColor" viewBox="0 0 16 16"
+                         xmlns="http://www.w3.org/2000/svg"
+                         aria-hidden="true">
+                        <path clip-rule="evenodd" fill-rule="evenodd"
+                              d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z"></path>
+                    </svg>
+                </a>
+                <span class="text-center font-bold uppercase">
+                {% if garden %}
+
+                    {{ garden.name }}
+                {% else %}
+                    Nouveau Jardin
+                {% endif %}
+                </span>
+
+            </div>
+            <div class="rounded-md border-gray-100 border-2 bg-white">
+                {% url 'gardens:char-count' as char_count_url %}
+                <form class="grid grid-cols-1 items-center" method="post">
+                    {% csrf_token %}
+                    {% render_field form.name class+="m-2 border-gray-200" maxlength=form.name.field.max_length hx-trigger="load, keyup changed delay:70ms" hx-post=char_count_url hx-swap="innerHTML" hx-target="#charFieldCount" id="gardenNameField" %}
+
+                    <p class="text-xs text-right mr-5" id="charFieldCount"> 0 / {{ form.name.field.max_length }}
+                        caractères</p>
+                    {% render_field form.description class+="h-48 m-2 border-gray-200" %}
+                    <input type="submit"
+                           value="Enregistrer les modifications"
+                           class="cursor-pointer p-2 text-green-700 hover:text-white text-center border-green-700 border-2 hover:border-white rounded-full bg-white hover:bg-green-700 text-sm mr-32 ml-32 mb-4">
+                </form>
+            </div>
+        </div>
+    </main>
 {% endblock %}

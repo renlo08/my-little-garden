@@ -35,10 +35,10 @@ class Garden(models.Model):
         return reverse('gardens:detail', kwargs={'pk': self.pk})
 
     def get_edit_url(self):
-        return reverse('gardens:update', kwargs={'id': self.id})
+        return reverse('gardens:update', kwargs={'pk': self.id})
 
     def get_delete_url(self):
-        return reverse('gardens:delete', kwargs={'id': self.id})
+        return reverse('gardens:delete', kwargs={'pk': self.id})
 
     def get_amendment_children(self, order='desc'):
         qs = self.fertilizationinline_set.all()
