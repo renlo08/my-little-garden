@@ -3,10 +3,21 @@
 
 {% block content %}
     <main class="ml-4 mr-4">
-        <h1 class="flex justify-center m-2 p-4 font-bold text-3xl border-b-2 uppercase">
-            Mes Jardins
-        </h1>
-    <div class="htmx-indicator">Updating...</div>
+        <div class="flex justify-between items-center border-b-2">
+
+            <h1 class="m-auto p-4 font-bold text-3xl uppercase">
+                Mes Jardins
+            </h1>
+            <a href="{% url 'gardens:create' %}" class="cursor-pointer p-2 text-green-700 hover:text-white border-green-700 border-2 hover:border-white rounded-full bg-white hover:bg-green-700 text-sm flex items-center gap-1">
+                <svg class="w-4 h-4" data-slot="icon" fill="currentColor" viewBox="0 0 16 16"
+                     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z"></path>
+                </svg>
+                <span class="uppercase font-bold text-xs">Ajouter jardin</span>
+
+            </a>
+        </div>
+        <div class="htmx-indicator">Updating...</div>
         <div id='garden-list' class="mt-4 grid sm:grid-cols-4 gap-10">
             <!-- Garden cards -->
             {% include 'gardens/partials/cards.html' %}
