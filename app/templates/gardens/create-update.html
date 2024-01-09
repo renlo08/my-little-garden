@@ -10,7 +10,7 @@
 
     <main class="grid grid-cols-1 place-items-center">
         <div class="justify-center w-5/12 h-full text-sm">
-            <div class="grid grid-cols-3 bg-green-600 mb-3 mt-3 text-white">
+            <div class="grid grid-cols-3 bg-green-600 mb-3 mt-3 text-white p-2">
 
                 <a class="cursor-pointer" href="{% url 'gardens:list' %}">
                     <svg class="w-5 h-5" data-slot="icon" fill="currentColor" viewBox="0 0 16 16"
@@ -41,7 +41,7 @@
                     {% render_field form.description class+="h-48 m-2 border-gray-200" %}
                     <input type="submit"
                            value="Enregistrer les modifications"
-                           class="cursor-pointer p-2 text-white text-center bg-blue-700 rounded text-sm mr-32 ml-32 mb-4 hover:bg-blue-600">
+                           class="cursor-pointer p-2 text-green-700 hover:text-white text-center border-green-700 border-2 hover:border-white rounded-full bg-white hover:bg-green-700 text-sm mr-32 ml-32 mb-4">
                 </form>
             </div>
         </div>
