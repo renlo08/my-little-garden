@@ -138,3 +138,8 @@ class GardenUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['name', 'description']
     template_name = 'gardens/create-update.html'
     success_url = reverse_lazy('gardens:list')
+
+def char_count(request):
+    text = request.POST.get('name', '')
+    count = len(text)
+    return HttpResponse(f"{count} / {Garden._meta.get_field('name').max_length} caractères.")
