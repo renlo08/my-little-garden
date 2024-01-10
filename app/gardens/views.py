@@ -10,11 +10,12 @@ from gardens.models import Garden, FertilizationInline
 
 
 class GardenFormView(CreateView):
-    template_name = 'gardens/partials/create.html'
+    template_name = 'gardens/create-update.html'
     form_class = GardenForm
+    success_url = reverse_lazy('gardens:list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.created_by = self.request.user
         return super().form_valid(form)
 
 

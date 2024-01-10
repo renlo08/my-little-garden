@@ -6,7 +6,6 @@
         <span>Click on 'Add Garden' to create your first garden</span>
     </div>
 {% else %}
-
     {% for garden in gardens %}
         <!-- Garden card -->
         <div id='garden-card-{{ forloop.counter }}'
@@ -15,9 +14,9 @@
             <!-- card image -->
             <img src="https://picsum.photos/id/110/100"
                  alt="card-picture"
-                 class="h-32 sm:h-44 w-full object-cover">
+                 class="h-24 sm:h-44 w-full object-cover">
             <!-- card header -->
-            <div class="m-4 line-clamp-5">
+            <div class="m-4 line-clamp-3">
                 <span class="font-bold truncate block">{{ garden.name }}</span>
                 <span class="block text-gray-500 text-sm">{{ garden.description }}</span>
             </div>
@@ -48,7 +47,7 @@
                     </svg>
                 </a>
             </div>
-          
+
             <!-- tooltip -->
             <div id="tooltip-delete-{{ forloop.counter }}" role="tooltip"
                  class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-emerald-700 rounded-lg shadow-sm opacity-0 tooltip dark:bg-emerald-500">
