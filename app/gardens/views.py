@@ -101,20 +101,17 @@ def garden_amendment_update_hx_view(request, parent_id=None, id=None):
     return render(request, 'gardens/partials/fertilization-form.html', context={'form': form})
 
 
-class GardenListView(ListView):
+class GardenListView(LoginRequiredMixin, ListView):
     template_name = 'gardens/gardens.html'
     model = Garden
     context_object_name = 'gardens'
 
     def get_queryset(self):
-        return _get_all_user_garden(self.request)
-
-def _get_all_user_garden(request):
-    user = request.user
-    if user.is_authenticated:
-        return user.gardens.all()
-    else:
-        return Garden.objects.none()
+        user = self.request.user
+        if user.is_authenticated:
+            return user.gardens.all()
+        else:
+            return Garden.objects.none()
 
 @login_required
 def detail(request, pk: int):
@@ -123,13 +120,15 @@ def detail(request, pk: int):
 
 
 @login_required
-def garden_delete_view(request, pk: int):
+def garden_delete_view(request, slug: str):
     if not request.htmx:
         raise Http404('Delete Garden is not HTMX requested. Invalid request')
-    garden = get_object_or_404(Garden, pk=pk, created_by=request.user)
+    garden = get_object_or_404(Garden, slug=slug, created_by=request.user)
     if request.method == 'POST':
         garden.delete()
-        context = {'gardens': _get_all_user_garden(request)}
+        # Get all gardens after delete
+        gardens = Garden.objects.filter(created_by=request.user)
+        context = {'gardens': gardens}
         return render(request, "gardens/partials/cards.html", context)
     return render(request, "gardens/delete.html", {"garden": garden})
 
@@ -140,7 +139,15 @@ class GardenUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'gardens/create-update.html'
     success_url = reverse_lazy('gardens:list')
 
+
 def char_count(request):
     text = request.POST.get('name', '')
     count = len(text)
     return HttpResponse(f"{count} / {Garden._meta.get_field('name').max_length} caractères.")
+
+
+@login_required
+def search_garden_view(request):
+    gardens = Garden.objects.search(request.POST.get('card-search'))
+    context = {'gardens': gardens}
+    return render(request, "gardens/partials/cards.html", context=context)
