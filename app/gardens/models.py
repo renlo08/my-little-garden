@@ -3,8 +3,12 @@ from datetime import datetime, timedelta, timezone
 import pint
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from django.urls import reverse
 
+from gardens import utils
 from gardens.validators import validate_unit_measurement
 
 User = settings.AUTH_USER_MODEL
@@ -23,6 +27,22 @@ class Fertilizer(models.Model):
     components = models.ManyToManyField(FertilizerComponent)
 
 
+class GardenQuerySet(models.QuerySet):
+    def search(self, query):
+        if query is None or query == '':
+            return self.none()
+        lookups = (Q(name__icontains=query) | Q(description__icontains=query))
+        return self.filter(lookups)
+
+
+class GardenManager(models.Manager):
+    def get_queryset(self):
+        return GardenQuerySet(self.model, using=self._db)
+
+    def search(self, query):
+        return self.get_queryset().search(query=query)
+
+
 class Garden(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='gardens')
     name = models.CharField(max_length=128)
@@ -30,6 +50,8 @@ class Garden(models.Model):
     description = models.TextField()
     creation = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    objects = GardenManager()
 
     def get_absolute_url(self):
         return reverse('gardens:detail', kwargs={'pk': self.pk})
@@ -43,6 +65,18 @@ class Garden(models.Model):
     def get_amendment_children(self, order='desc'):
         qs = self.fertilizationinline_set.all()
         return qs.order_by('-due_date') if order == 'desc' else qs.order_by('due_date')
+
+
+@receiver(pre_save, sender=Garden)
+def pre_save_receiver(sender, instance, *args, **kwargs):
+    if instance.slug is None:
+        utils.slugify_instance_name(instance, save=False)
+
+
+@receiver(post_save, sender=Garden)
+def post_save_receiver(sender, instance, created: bool, *args, **kwargs):
+    if created:
+        utils.slugify_instance_name(instance, save=True)
 
 
 class FertilizationInline(models.Model):
