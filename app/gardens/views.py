@@ -148,6 +148,10 @@ def char_count(request):
 
 @login_required
 def search_garden_view(request):
-    gardens = Garden.objects.search(request.POST.get('card-search'))
+    card_search = request.GET.get('garden-search', None)
+    if card_search:  # Search functionality
+        gardens = Garden.objects.search(card_search)
+    else:  # Clear functionality
+        gardens = Garden.objects.all()
     context = {'gardens': gardens}
     return render(request, "gardens/partials/cards.html", context=context)
