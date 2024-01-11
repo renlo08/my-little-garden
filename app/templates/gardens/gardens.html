@@ -11,12 +11,11 @@
 
             <!-- Search Bar -->
             <form id="search-garden-form" class="m-2">
-                {% csrf_token %}
                 <label for="card-search"
                        class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3">
-                        <button type="submit" class="cursor-pointer" onclick="searchGardenSubmit()">
+                        <button type="submit" class="cursor-pointer">
                             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -26,9 +25,9 @@
                         </button>
                     </div>
                     <input type="search" name="garden-search" id="cardSearch"
-                           hx-get="{% url 'gardens:search' %}" hx-trigger="keyup changed delay:200ms"
+                           hx-get="{% url 'gardens:search' %}" hx-trigger="keyup changed delay:200ms" hx-swap="innerHTML"
                            hx-target="#garden-list"
-                           class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           class="block w-full h-2 p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                            placeholder="Search garden...">
                 </div>
             </form>
@@ -46,8 +45,9 @@
         </div>
 
         <div class="htmx-indicator">Updating...</div>
-        <div id='garden-list' class="mt-4 grid sm:grid-cols-4 gap-7 mb-3.5">
-            <!-- Garden cards -->
+        <!-- Garden cards -->
+        <div id="garden-list">
+
             {% include 'gardens/partials/cards.html' %}
         </div>
     </main>

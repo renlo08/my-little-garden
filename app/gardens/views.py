@@ -150,8 +150,10 @@ def char_count(request):
 def search_garden_view(request):
     card_search = request.GET.get('garden-search', None)
     if card_search:  # Search functionality
+        context = {'is_search': True}
         gardens = Garden.objects.search(card_search)
     else:  # Clear functionality
+        context = {'is_search': False}
         gardens = Garden.objects.all()
-    context = {'gardens': gardens}
+    context['gardens'] = gardens
     return render(request, "gardens/partials/cards.html", context=context)
