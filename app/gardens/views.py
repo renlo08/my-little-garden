@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, HttpResponse, HttpResponseBadRequest
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
@@ -17,15 +17,6 @@ class GardenFormView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
-
-
-@login_required
-def garden_detail_view(request, id=None):
-    obj = get_object_or_404(Garden, id=id, created_by=request.user)
-    context = {
-        "object": obj
-    }
-    return render(request, 'gardens/detail.html', context=context)
 
 
 @login_required
@@ -72,33 +63,6 @@ def amendment_update_view(request, garden_slug:str = None, id: int=None):
 
     if request.method == "PUT":
         form = FertilizationForm(request.PUT, instance=instance)
-
-@login_required
-def garden_amendment_update_hx_view(request, parent_id=None, id=None):
-    if not request.htmx:
-        raise Http404("HTMX request not found")
-
-    # Retrieve the Garden instance
-    try:
-        parent_obj = Garden.objects.get(id=parent_id, created_by=request.user)
-    except Garden.DoesNotExist:
-        raise Http404("Garden not found")
-
-    # Retrieve the FertilizationInline instance
-    try:
-        instance = FertilizationInline.objects.get(id=id, garden=parent_obj)
-    except FertilizationInline.DoesNotExist:
-        return HttpResponse(status=404, content_type="text/plain", content="No Fertilization Information")
-
-    # Handle the form submission
-    if request.method == "POST":
-        form = FertilizationForm(request.POST, instance=instance)
-        if not form.is_valid():
-            return HttpResponseBadRequest("Invalid form data")
-    else:
-        form = FertilizationForm(instance=instance)
-
-    return render(request, 'gardens/partials/fertilization-form.html', context={'form': form})
 
 
 class GardenListView(LoginRequiredMixin, ListView):
