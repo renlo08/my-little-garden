@@ -5,20 +5,16 @@ from gardens import views
 app_name = 'gardens'
 
 urlpatterns = [
-    # path("", garden_list_view, name='list'),
     path("", views.GardenListView.as_view(), name='list'),
-    # path("create/", views.garden_create_view, name='create'),
-    # path("<int:id>/delete/", garden_delete_view, name='delete'),
-    # path("<int:id>/edit/", garden_update_view, name='update'),
-    # path("<int:id>/", garden_detail_view, name='detail'),
+    path('create/', views.GardenFormView.as_view(), name='create'),
+    path('<str:slug>/edit/', views.GardenUpdateView.as_view(), name='edit'),
 ]
 
 htmx_urlpatterns = [
     path('char_count/', views.char_count, name='char-count'),
-    path('delete/<int:pk>/', views.garden_delete_view, name='delete'),
-    path('update/<int:pk>/', views.GardenUpdateView.as_view(), name='update'),
-    path('detail/<int:pk>/', views.detail, name='detail'),
-    path('create/', views.GardenFormView.as_view(), name='create'),
+    path('<str:slug>/delete/', views.garden_delete_view, name='delete'),
+    path('<str:slug>detail/', views.detail, name='detail'),
+    path('search/', views.search_garden_view, name='search')
 ]
 
 urlpatterns += htmx_urlpatterns

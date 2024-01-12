@@ -31,7 +31,7 @@ class GardenQuerySet(models.QuerySet):
     def search(self, query):
         if query is None or query == '':
             return self.none()
-        lookups = (Q(name__icontains=query) | Q(description__icontains=query))
+        lookups = Q(name__icontains=query) | Q(description__icontains=query)
         return self.filter(lookups)
 
 
@@ -54,13 +54,13 @@ class Garden(models.Model):
     objects = GardenManager()
 
     def get_absolute_url(self):
-        return reverse('gardens:detail', kwargs={'pk': self.pk})
+        return reverse('gardens:detail', kwargs={'slug': self.slug})
 
     def get_edit_url(self):
-        return reverse('gardens:update', kwargs={'pk': self.id})
+        return reverse('gardens:edit', kwargs={'slug': self.slug})
 
     def get_delete_url(self):
-        return reverse('gardens:delete', kwargs={'pk': self.id})
+        return reverse('gardens:delete', kwargs={'slug': self.slug})
 
     def get_amendment_children(self, order='desc'):
         qs = self.fertilizationinline_set.all()
