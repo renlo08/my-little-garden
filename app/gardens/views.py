@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
 from gardens.forms import GardenForm, FertilizationForm
 from gardens.models import Garden, FertilizationInline
@@ -77,10 +77,11 @@ class GardenListView(LoginRequiredMixin, ListView):
         else:
             return Garden.objects.none()
 
-@login_required
-def detail(request, pk: int):
-    garden = get_object_or_404(Garden, pk=pk, created_by=request.user)
-    return render(request, 'gardens/partials/detail.html', {'garden': garden})
+
+class GardenDetailView(LoginRequiredMixin, DetailView):
+    template_name = 'gardens/details.html'
+    model = Garden
+    context_object_name = 'garden'
 
 
 @login_required
