@@ -27,6 +27,18 @@ class Fertilizer(models.Model):
     components = models.ManyToManyField(FertilizerComponent)
 
 
+class Address(models.Model):
+    name = models.CharField(max_length=60)
+    street = models.CharField(max_length=60, blank=True, null=True)
+    house_number = models.CharField(max_length=10, blank=True, null=True)
+    city = models.CharField(max_length=60, blank=True, null=True)
+    state = models.CharField(max_length=60, blank=True, null=True)
+    postal_code = models.CharField(max_length=10, blank=True, null=True)
+    country = models.CharField(max_length=30, blank=True, null=True)
+    lattitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+
+
 class GardenQuerySet(models.QuerySet):
     def search(self, query):
         if query is None or query == '':
@@ -50,8 +62,12 @@ class Garden(models.Model):
     description = models.TextField()
     creation = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='gardens', null=True, blank=True)
 
     objects = GardenManager()
+
+    def get_last_update(self):
+        return compute_time_difference(self.updated)
 
     def get_absolute_url(self):
         return reverse('gardens:detail', kwargs={'slug': self.slug})
@@ -88,16 +104,7 @@ class FertilizationInline(models.Model):
     # fertilizer = models.ForeignKey(Fertilizer, on_delete=models.SET_NULL, null=True)
 
     def since_creation_timestamp(self):
-        current_time = datetime.now(tz=timezone.utc)  # This is timezone-aware
-        time_difference = current_time - self.due_date
-
-        if time_difference < timedelta(hours=1):
-            return f"Il y a {time_difference.total_seconds() // 60}min"
-        elif time_difference < timedelta(days=1):
-            hours = int(time_difference.total_seconds() // 3600)
-            return f"Il y a {hours}h"
-        else:
-            return f"Il y a {time_difference.days}j.\n({self.due_date.strftime('%d.%-m.%y')})"
+        return compute_time_difference(self.due_date)
 
     def convert_to_system(self, system="mks"):
         if self.quantity_as_float is None:
@@ -131,3 +138,16 @@ class FertilizationInline(models.Model):
             'id': self.id
         }
         return reverse('gardens:hx-amendment-detail', kwargs=kwargs)
+
+
+def compute_time_difference(date: datetime):
+    current_time = datetime.now(tz=timezone.utc)  # This is timezone-aware
+    time_difference = current_time - date
+
+    if time_difference < timedelta(hours=1):
+        return f"Il y a {time_difference.total_seconds() // 60}min"
+    elif time_difference < timedelta(days=1):
+        hours = int(time_difference.total_seconds() // 3600)
+        return f"Il y a {hours}h"
+    else:
+        return f"Il y a {time_difference.days}j.\n({date.strftime('%d.%-m.%y')})"
