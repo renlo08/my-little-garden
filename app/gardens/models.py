@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from enumfields import EnumField
 
 from gardens import utils
 from gardens.validators import validate_unit_measurement
@@ -38,6 +39,15 @@ class Address(models.Model):
     lattitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
+
+class GardenOwner(models.Model):
+    gender = EnumField(utils.Gender, max_length=1)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
+
 
 class GardenQuerySet(models.QuerySet):
     def search(self, query):
@@ -65,6 +75,9 @@ class Garden(models.Model):
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='gardens', null=True, blank=True)
 
     objects = GardenManager()
+
+    def has_garden(self):
+        return self.address is not None
 
     def get_last_update(self):
         return compute_time_difference(self.updated)
@@ -145,7 +158,8 @@ def compute_time_difference(date: datetime):
     time_difference = current_time - date
 
     if time_difference < timedelta(hours=1):
-        return f"Il y a {time_difference.total_seconds() // 60}min"
+        minutes = int(time_difference.total_seconds() / 60)
+        return f"Il y a {minutes}min"
     elif time_difference < timedelta(days=1):
         hours = int(time_difference.total_seconds() // 3600)
         return f"Il y a {hours}h"

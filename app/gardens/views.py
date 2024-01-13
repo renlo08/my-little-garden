@@ -83,6 +83,10 @@ class GardenDetailView(LoginRequiredMixin, DetailView):
     model = Garden
     context_object_name = 'garden'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['address'] = self.object.address
+        return context
 
 @login_required
 def garden_delete_view(request, slug: str):

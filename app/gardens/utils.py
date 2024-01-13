@@ -1,4 +1,5 @@
 import random
+from enum import Enum
 
 from django.utils.text import slugify
 
@@ -19,3 +20,8 @@ def slugify_instance_name(instance, save=False, new_slug=None):
     if save:
         instance.save()
     return instance
+
+class Gender(Enum):
+    MALE = 'M'
+    FEMALE = 'F'
+    OTHER = 'O'

@@ -17,13 +17,12 @@ class GardenAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     readonly_fields = ["slug", "creation", "updated"]
 
-
 # Register the model and admin class
 admin.site.register(Garden, GardenAdmin)
 
 
 class AddressAdmin(admin.ModelAdmin):
-    list_display = ['name', 'city', 'street', 'house_number', 'postal_code', 'country']
+    list_display = ('name', 'city', 'street', 'house_number', 'postal_code', 'country')
     readonly_fields = ["lattitude", "longitude"]
 
 

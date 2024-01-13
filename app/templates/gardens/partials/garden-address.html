@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+{% block garden_address %}
+
+    <div>
+        <address>
+            <p>
+                {% render_field address.street %} {% render_field address.house_number %}
+            </p>
+            <p>
+                {% render_field address.postal_code %} - {% render_field address.city %}
+            </p>
+            <p>
+                {% render_field address.state %} - {% render_field address.country %}
+            </p>
+        </address>
+    </div>
+{% endblock %}
