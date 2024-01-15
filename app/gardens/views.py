@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
 from gardens.forms import GardenForm, FertilizationForm
-from gardens.models import Garden, FertilizationInline
+from gardens.models import Garden, FertilizationInline, Activity
 
 
 class GardenFormView(CreateView):
@@ -45,6 +45,7 @@ def garden_update_view(request, id=None):
         form.save()
         context['message'] = 'Data saved.'
     return render(request, "gardens/create-update.html", context)
+
 
 @login_required
 def amendment_update_view(request, garden_slug:str = None, id: int=None):
@@ -88,6 +89,7 @@ class GardenDetailView(LoginRequiredMixin, DetailView):
         context['address'] = self.object.address
         return context
 
+
 @login_required
 def garden_delete_view(request, slug: str):
     if not request.htmx:
@@ -126,3 +128,7 @@ def search_garden_view(request):
         gardens = Garden.objects.all()
     context['gardens'] = gardens
     return render(request, "gardens/partials/cards.html", context=context)
+
+
+class ActivitiesView(LoginRequiredMixin, ListView):
+    model = Activity

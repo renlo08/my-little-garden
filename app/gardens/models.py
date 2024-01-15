@@ -7,7 +7,6 @@ from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.urls import reverse
-from enumfields import EnumField
 from geopy import Nominatim
 
 from gardens import utils
@@ -29,14 +28,15 @@ class Fertilizer(models.Model):
     components = models.ManyToManyField(FertilizerComponent)
 
 
+
+
 class Address(models.Model):
     name = models.CharField(max_length=60)
-    street = models.CharField(max_length=60, blank=True, null=True)
-    house_number = models.CharField(max_length=10, blank=True, null=True)
-    city = models.CharField(max_length=60, blank=True, null=True)
+    street = models.CharField(max_length=60, default='')
+    city = models.CharField(max_length=60, default='')
     state = models.CharField(max_length=60, blank=True, null=True)
-    postal_code = models.CharField(max_length=10, blank=True, null=True)
-    country = models.CharField(max_length=30, blank=True, null=True)
+    postal_code = models.CharField(max_length=10, default='')
+    country = models.CharField(max_length=30, default='')
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
@@ -49,7 +49,9 @@ class Address(models.Model):
         super().save(*args, **kwargs)
 
     def get_lat_lon(self):
-        address_string = f"{self.street} {self.house_number}, {self.city}, {self.postal_code}"
+        # Remove None components
+        address_components = list(filter(None, [self.street, self.city, self.state, self.postal_code]))
+        address_string = ", ".join(address_components)
         geolocator = Nominatim(user_agent="myLittleGardenApp")
         location = geolocator.geocode(address_string)
 
@@ -57,9 +59,27 @@ class Address(models.Model):
             self.latitude = location.latitude
             self.longitude = location.longitude
 
+    def get_not_empty_fields(self):
+        """ Returns a list of fields that aren't empty. """
+        field_list = ['street', 'state', 'postal_code', 'city', 'country']
+        return [(field.name, field.value_to_string(self)) for field in Address._meta.fields if field.name in field_list and getattr(self, field.name) is not None]
+
+
+class ActivityChoices(models.TextChoices):
+    FERTILIZE = "F", "Fertilisation"
+    PLANT = "P", "Plantation"
+    CUT = "C", "Taille"
+
+
+class GenderChoices(models.TextChoices):
+    MISTER = "MR", "Mr."
+    MADAME = "MRS", "Mme."
+    MISS = "MSS", "Mlle."
+
 
 class GardenOwner(models.Model):
-    gender = EnumField(utils.Gender, max_length=1)
+    activity = models.CharField(max_length=1, choices=ActivityChoices.choices)
+    gender = models.CharField(max_length=3, choices=GenderChoices.choices)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
 
@@ -81,13 +101,15 @@ class GardenManager(models.Manager):
 
 
 class Garden(models.Model):
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='gardens')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
+                                   related_name='gardens')
     name = models.CharField(max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
     creation = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='gardens', null=True, blank=True)
+    size = models.PositiveIntegerField(default=0)
 
     objects = GardenManager()
 
@@ -121,6 +143,20 @@ def pre_save_receiver(sender, instance, *args, **kwargs):
 def post_save_receiver(sender, instance, created: bool, *args, **kwargs):
     if created:
         utils.slugify_instance_name(instance, save=True)
+
+
+class Activity(models.Model):
+    FERTILIZE = "F"
+    PLANTATION = 'P'
+    TAILLE = 'T'
+
+    ACTIVITY_CHOICES = [(FERTILIZE, 'Fertilisation'), (PLANTATION, 'Plantation'), (TAILLE, 'Taille')]
+    activity = models.CharField(max_length=1, choices=ACTIVITY_CHOICES)
+    comment = models.TextField()
+    garden = models.ForeignKey(Garden, on_delete=models.CASCADE, related_name='activites', null=True, blank=True)
+
+    def __str__(self):
+        return self.activity
 
 
 class FertilizationInline(models.Model):
@@ -174,9 +210,9 @@ def compute_time_difference(date: datetime):
 
     if time_difference < timedelta(hours=1):
         minutes = int(time_difference.total_seconds() / 60)
-        return f"Il y a {minutes}min"
+        return f"il y a {minutes}min"
     elif time_difference < timedelta(days=1):
         hours = int(time_difference.total_seconds() // 3600)
-        return f"Il y a {hours}h"
+        return f"il y a {hours}h"
     else:
-        return f"Il y a {time_difference.days}j.\n({date.strftime('%d.%-m.%y')})"
+        return f"il y a {time_difference.days}j.\n({date.strftime('%d.%-m.%y')})"
