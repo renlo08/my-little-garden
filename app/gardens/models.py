@@ -31,12 +31,11 @@ class Fertilizer(models.Model):
 
 class Address(models.Model):
     name = models.CharField(max_length=60)
-    street = models.CharField(max_length=60, blank=True, null=True)
-    house_number = models.CharField(max_length=10, blank=True, null=True)
-    city = models.CharField(max_length=60, blank=True, null=True)
+    street = models.CharField(max_length=60)
+    city = models.CharField(max_length=60)
     state = models.CharField(max_length=60, blank=True, null=True)
-    postal_code = models.CharField(max_length=10, blank=True, null=True)
-    country = models.CharField(max_length=30, blank=True, null=True)
+    postal_code = models.CharField(max_length=10)
+    country = models.CharField(max_length=30)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
@@ -49,13 +48,20 @@ class Address(models.Model):
         super().save(*args, **kwargs)
 
     def get_lat_lon(self):
-        address_string = f"{self.street} {self.house_number}, {self.city}, {self.postal_code}"
+        # Remove None components
+        address_components = list(filter(None, [self.street, self.city, self.state, self.postal_code]))
+        address_string = ", ".join(address_components)
         geolocator = Nominatim(user_agent="myLittleGardenApp")
         location = geolocator.geocode(address_string)
 
         if location:
             self.latitude = location.latitude
             self.longitude = location.longitude
+
+    def get_not_empty_fields(self):
+        """ Returns a list of fields that aren't empty. """
+        field_list = ['street', 'state', 'postal_code', 'city', 'country']
+        return [(field.name, field.value_to_string(self)) for field in Address._meta.fields if field.name in field_list and getattr(self, field.name) is not None]
 
 
 class GardenOwner(models.Model):
@@ -81,7 +87,8 @@ class GardenManager(models.Manager):
 
 
 class Garden(models.Model):
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, related_name='gardens')
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True,
+                                   related_name='gardens')
     name = models.CharField(max_length=128)
     slug = models.SlugField(unique=True, blank=True, null=True)
     description = models.TextField()
@@ -174,9 +181,9 @@ def compute_time_difference(date: datetime):
 
     if time_difference < timedelta(hours=1):
         minutes = int(time_difference.total_seconds() / 60)
-        return f"Il y a {minutes}min"
+        return f"il y a {minutes}min"
     elif time_difference < timedelta(days=1):
         hours = int(time_difference.total_seconds() // 3600)
-        return f"Il y a {hours}h"
+        return f"il y a {hours}h"
     else:
-        return f"Il y a {time_difference.days}j.\n({date.strftime('%d.%-m.%y')})"
+        return f"il y a {time_difference.days}j.\n({date.strftime('%d.%-m.%y')})"

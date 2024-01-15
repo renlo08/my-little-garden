@@ -46,6 +46,7 @@ def garden_update_view(request, id=None):
         context['message'] = 'Data saved.'
     return render(request, "gardens/create-update.html", context)
 
+
 @login_required
 def amendment_update_view(request, garden_slug:str = None, id: int=None):
     if not request.htmx:
@@ -87,6 +88,7 @@ class GardenDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['address'] = self.object.address
         return context
+
 
 @login_required
 def garden_delete_view(request, slug: str):

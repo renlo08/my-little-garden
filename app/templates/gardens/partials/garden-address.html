@@ -1,17 +1,20 @@
 {% load widget_tweaks %}
 {% block garden_address %}
-
-    <div>
-        <address>
-            <p>
-                {% render_field address.street %} {% render_field address.house_number %}
-            </p>
-            <p>
-                {% render_field address.postal_code %} - {% render_field address.city %}
-            </p>
-            <p>
-                {% render_field address.state %} - {% render_field address.country %}
-            </p>
-        </address>
-    </div>
+    {% if garden.has_garden %}
+        <div>
+            <address>
+                <p>{% render_field address.street %}</p>
+                <p>
+                    {% if address.state %}
+                        {% render_field address.state %}, {% render_field address.postal_code %} -
+                        {% render_field address.city %}
+                    {% else %}
+                        {% render_field address.postal_code %} - {% render_field address.city %}
+                    {% endif %}
+                </p>
+            </address>
+        </div>
+    {% else %}
+        No address available.
+    {% endif %}
 {% endblock %}
