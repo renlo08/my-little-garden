@@ -1,6 +1,6 @@
 from django.urls import path
 
-from gardens import views
+from gardens import views, utils
 
 app_name = 'gardens'
 
@@ -18,4 +18,4 @@ htmx_urlpatterns = [
     # path('activities/')
 ]
 
-urlpatterns += htmx_urlpatterns
+urlpatterns = utils.arrange_urlpatterns(urlpatterns + htmx_urlpatterns)
