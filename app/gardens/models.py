@@ -109,7 +109,7 @@ class Garden(models.Model):
     creation = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='gardens', null=True, blank=True)
-    size = models.PositiveIntegerField(default=0)
+    surface = models.PositiveIntegerField(default=0)
 
     objects = GardenManager()
 

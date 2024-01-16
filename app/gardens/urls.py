@@ -14,7 +14,8 @@ urlpatterns = [
 htmx_urlpatterns = [
     path('char_count/', views.char_count, name='char-count'),
     path('<str:slug>/delete/', views.garden_delete_view, name='delete'),
-    path('search/', views.search_garden_view, name='search')
+    path('search/', views.search_garden_view, name='search'),
+    # path('activities/')
 ]
 
 urlpatterns += htmx_urlpatterns
