@@ -31,10 +31,10 @@
 
             </div>
             <div class="rounded-md border-gray-100 border-2 bg-white">
-                {% url 'gardens:char-count' as char_count_url %}
+                {% url 'gardens:length-name' as len_name_url %}
                 <form class="grid grid-cols-1 items-center" method="post">
                     {% csrf_token %}
-                    {% render_field form.name class+="m-2 border-gray-200" maxlength=form.name.field.max_length hx-trigger="load, keyup changed delay:70ms" hx-post=char_count_url hx-swap="innerHTML" hx-target="#charFieldCount" id="gardenNameField" %}
+                    {% render_field form.name class+="m-2 border-gray-200" maxlength=form.name.field.max_length hx-trigger="load, keyup changed delay:70ms" hx-post=len_name_url hx-swap="innerHTML" hx-target="#charFieldCount" id="gardenNameField" %}
 
                     <p class="text-xs text-right mr-5" id="charFieldCount"> 0 / {{ form.name.field.max_length }}
                         caractères</p>

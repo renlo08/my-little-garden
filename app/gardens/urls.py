@@ -1,6 +1,6 @@
 from django.urls import path
 
-from gardens import views
+from gardens import views, utils
 
 app_name = 'gardens'
 
@@ -12,10 +12,10 @@ urlpatterns = [
 ]
 
 htmx_urlpatterns = [
-    path('char_count/', views.char_count, name='char-count'),
-    path('<str:slug>/delete/', views.garden_delete_view, name='delete'),
+    path('/garden_name_length', views.garden_name_length_view, name='length-name'),
     path('search/', views.search_garden_view, name='search'),
+    path('<str:slug>/delete/', views.garden_delete_view, name='delete'),
     # path('activities/')
 ]
 
-urlpatterns += htmx_urlpatterns
+urlpatterns = utils.arrange_urlpatterns(urlpatterns + htmx_urlpatterns)
