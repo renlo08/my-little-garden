@@ -12,7 +12,7 @@ urlpatterns = [
 ]
 
 htmx_urlpatterns = [
-    path('/garden_name_length', views.garden_name_length_view, name='length-name'),
+    path('/name_length', views.garden_name_length_view, name='length-name'),
     path('search/', views.search_garden_view, name='search'),
     path('<str:slug>/delete/', views.garden_delete_view, name='delete'),
     # path('activities/')
