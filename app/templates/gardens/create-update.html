@@ -34,10 +34,13 @@
                 {% url 'gardens:length-name' as len_name_url %}
                 <form class="grid grid-cols-1 items-center" method="post">
                     {% csrf_token %}
-                    {% render_field form.name class+="m-2 border-gray-200" maxlength=form.name.field.max_length hx-trigger="load, keyup changed delay:70ms" hx-post=len_name_url hx-swap="innerHTML" hx-target="#charFieldCount" id="gardenNameField" %}
-
-                    <p class="text-xs text-right mr-5" id="charFieldCount"> 0 / {{ form.name.field.max_length }}
-                        caractères</p>
+                    {% render_field form.name class+="ml-2 mr-2 mt-2 border-gray-200" maxlength=form.name.field.max_length hx-trigger="load, keyup changed delay:70ms" hx-post=len_name_url hx-swap="innerHTML" hx-target="#charFieldCount" id="gardenNameField" %}
+                    {% if form.name.errors %}
+                        <div class="text-red-600 text-xs text-right mr-4">
+                            {{ form.name.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <p class="text-xs text-right mr-5" id="charFieldCount"> 0 / {{ form.name.field.max_length }} caractères</p>
                     {% render_field form.description class+="h-48 m-2 border-gray-200" %}
                     <input type="submit"
                            value="Enregistrer les modifications"

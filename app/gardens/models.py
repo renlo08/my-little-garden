@@ -135,8 +135,8 @@ class Garden(models.Model):
 
 @receiver(pre_save, sender=Garden)
 def pre_save_receiver(sender, instance, *args, **kwargs):
-    if instance.slug is None:
-        utils.slugify_instance_name(instance, save=False)
+    # if instance.slug is None:
+    utils.slugify_instance_name(instance, save=False)
 
 
 @receiver(post_save, sender=Garden)
