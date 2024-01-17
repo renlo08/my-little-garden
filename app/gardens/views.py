@@ -106,7 +106,7 @@ def garden_delete_view(request, slug: str):
 
 class GardenUpdateView(LoginRequiredMixin, UpdateView):
     model = Garden
-    fields = ['name', 'description']
+    form_class = GardenForm
     template_name = 'gardens/create-update.html'
     success_url = reverse_lazy('gardens:list')
 
