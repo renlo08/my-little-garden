@@ -3,19 +3,6 @@ import random
 from django.utils.text import slugify
 
 
-def arrange_urlpatterns(urlpatterns_list):
-    general_urlpatterns = []
-    specific_urlpatterns = []
-
-    for pattern in urlpatterns_list:
-        if '<' in pattern.pattern.regex.pattern:  # This means it's a general pattern
-            general_urlpatterns.append(pattern)
-        else:
-            specific_urlpatterns.append(pattern)
-
-    return specific_urlpatterns + general_urlpatterns
-
-
 def slugify_instance_name(instance, save=False, new_slug=None):
     if new_slug is not None:
         slug = new_slug
