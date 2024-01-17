@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from gardens.models import Garden, FertilizationInline
+from gardens.models import Garden, FertilizationInline, Address
 
 
 class FertilizationInlineAdmin(admin.ModelAdmin):
@@ -17,6 +17,14 @@ class GardenAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     readonly_fields = ["slug", "creation", "updated"]
 
-
 # Register the model and admin class
 admin.site.register(Garden, GardenAdmin)
+
+
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ['name', 'city', 'street', 'postal_code', 'country']
+    readonly_fields = ["latitude", "longitude"]
+
+
+# Register the model and admin class
+admin.site.register(Address, AddressAdmin)

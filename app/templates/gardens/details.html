@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="flex flex-row flex-nowrap">
+
+        <div class="bg-green-200 basis-1/12">
+            <ol>
+                <li>
+                    Entretien
+                </li>
+
+                <li>Calendrier</li>
+            </ol>
+        </div>
+
+        <div id="detail-content" class="bg-green-600 basis-11/12">
+            <div class="rounded-md bg-gray-100 p-2">
+
+                <h1 class="text-2xl font-bold">{{ garden.name }}</h1>
+                <p class="text-xs font-light italic">
+                    <span>Dernière mise à jour: {{ garden.get_last_update }}</span>
+                </p>
+                <p>{% include 'gardens/partials/garden-address.html' %}</p>
+            </div>
+            <div class="border-t-2 border-gray-600 m-2">
+                <h2 class="font-bold text-sm">Voici votre description concernant le jardin</h2>
+                <div>{{ garden.description }}</div>
+            </div>
+
+            <div class="bg-orange-600">Une autre div pas utilisé pour le moment</div>
+        </div>
+
+
+    </main>
+{% endblock %}

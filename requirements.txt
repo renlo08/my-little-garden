@@ -4,3 +4,4 @@ psycopg2-binary
 django-dotenv
 Pint==0.23
 python-dotenv==1.0.0
+django-enumfields==2.1.1
