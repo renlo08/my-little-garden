@@ -4,7 +4,7 @@ import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
 
-import gardens.validators
+import activities.validators
 
 
 class Migration(migrations.Migration):
@@ -79,7 +79,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('due_date', models.DateTimeField()),
                 ('quantity_as_float', models.FloatField(blank=True, null=True)),
-                ('unit', models.CharField(blank=True, max_length=50, null=True, validators=[gardens.validators.validate_unit_measurement])),
+                ('unit', models.CharField(blank=True, max_length=50, null=True, validators=[
+                    activities.validators.validate_unit_measurement])),
                 ('garden', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gardens.garden')),
             ],
         ),

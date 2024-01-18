@@ -1,6 +1,6 @@
 from django import forms
 
-from gardens.models import Garden, Fertilizer, FertilizationInline
+from gardens.models import Garden, Fertilizer
 
 
 class FertilizerForm(forms.ModelForm):
@@ -15,12 +15,6 @@ class FertilizerForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError('This fertilizer already exists')
         return data
-
-
-class FertilizationForm(forms.ModelForm):
-    class Meta:
-        model = FertilizationInline
-        fields = ['due_date', 'quantity_as_float', 'unit']
 
 
 class GardenForm(forms.ModelForm):

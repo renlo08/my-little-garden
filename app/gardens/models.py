@@ -1,6 +1,3 @@
-from datetime import datetime, timedelta, timezone
-
-import pint
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
@@ -9,8 +6,8 @@ from django.dispatch import receiver
 from django.urls import reverse
 from geopy import Nominatim
 
+from app.utils import compute_time_difference
 from gardens import utils
-from gardens.validators import validate_unit_measurement
 
 User = settings.AUTH_USER_MODEL
 
@@ -113,6 +110,9 @@ class Garden(models.Model):
 
     objects = GardenManager()
 
+    def __str__(self):
+        return self.name
+
     def has_address(self):
         return self.address is not None
 
@@ -147,60 +147,5 @@ def post_save_receiver(sender, instance, created: bool, *args, **kwargs):
 
 
 
-class FertilizationInline(models.Model):
-    garden = models.ForeignKey(Garden, on_delete=models.CASCADE)
-    due_date = models.DateTimeField()
-    quantity_as_float = models.FloatField(null=True, blank=True)
-    unit = models.CharField(max_length=50, validators=[validate_unit_measurement], blank=True, null=True)
-
-    # fertilizer = models.ForeignKey(Fertilizer, on_delete=models.SET_NULL, null=True)
-
-    def since_creation_timestamp(self):
-        return compute_time_difference(self.due_date)
-
-    def convert_to_system(self, system="mks"):
-        if self.quantity_as_float is None:
-            return None
-        ureg = pint.UnitRegistry(system=system)
-        return self.quantity_as_float * ureg[self.unit.lower()]
-
-    def as_mks(self):
-        # meter, kilogram, second
-        measurement = self.convert_to_system(system='mks')
-        return "{:~}".format(measurement.to_base_units())
-
-    def get_quantity(self, system="mks"):
-        if system == "mks":
-            return self.as_mks()
-        elif system == "imperial":
-            return self.as_imperial()
-
-    def as_imperial(self):
-        # miles, pounds, seconds
-        measurement = self.convert_to_system(system='imperial')
-        return measurement.to_base_units()
-
-    def get_nitrogen_quantity(self):
-        # TODO: required to add the product percentage
-        pass
-
-    def get_hx_edit_url(self):
-        kwargs = {
-            'parent_id': self.garden.id,
-            'id': self.id
-        }
-        return reverse('gardens:hx-amendment-detail', kwargs=kwargs)
 
 
-def compute_time_difference(date: datetime):
-    current_time = datetime.now(tz=timezone.utc)  # This is timezone-aware
-    time_difference = current_time - date
-
-    if time_difference < timedelta(hours=1):
-        minutes = int(time_difference.total_seconds() / 60)
-        return f"il y a {minutes}min"
-    elif time_difference < timedelta(days=1):
-        hours = int(time_difference.total_seconds() // 3600)
-        return f"il y a {hours}h"
-    else:
-        return f"il y a {time_difference.days}j.\n({date.strftime('%d.%-m.%y')})"
