@@ -63,6 +63,7 @@ class Activity(models.Model):
     def get_children_activity(self):
         if self.fertilization:
             return self.fertilization
+
     def get_quantity(self):
         if obj := self.get_children_activity():
             return obj.get_quantity()

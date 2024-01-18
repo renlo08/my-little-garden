@@ -2,29 +2,16 @@
 {% load static %}
 
 {% block garden_detail_content %}
-    <div>
-        <h1>Fertilisation</h1>
-        {% if activities %}
-            <table>
-                <thead>
-                <tr>
-                    <th>catégorie</th>
-                    <th>quantité</th>
-                    <th>actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for activity in activities %}
-                    <tr>
-                        <th>{{ activity.activity }}</th>
-                        <td>{{ activity.get_quantity }}</td>
-                        <td>TODO (...)</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>Pas de fertilisation</p>
-        {% endif %}
+    <div class="bg-gray-300 rounded-md">
+        <div class="bg-white m-2 rounded-md">
+
+
+            <h1 class="font-medium capitalize text-2xl">Fertilisation</h1>
+            {% if activities %}
+                {% include 'activities/partials/table.html' with objects=activities %}
+            {% else %}
+                <p>Pas de fertilisation</p>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

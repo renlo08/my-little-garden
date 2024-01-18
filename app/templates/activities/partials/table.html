@@ -1,0 +1,18 @@
+<table>
+    <thead>
+    <tr>
+        <th>catégorie</th>
+        <th>quantité</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for object in objects %}
+        <tr>
+            <th>{{ object.activity }}</th>
+            <td>{{ object.get_quantity }}</td>
+            <td>TODO (...)</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
