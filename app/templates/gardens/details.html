@@ -5,16 +5,9 @@
 
         <div class="bg-green-200 basis-1/12">
             <ol class="cursor-pointer">
-                <li>
-                    <a href="{% url 'gardens:detail' slug=garden.slug%}">Home</a></li>
-                <li>
-                    <a href="{% url 'gardens:activities:index' garden_slug=garden.slug %}">
-                        Entretien
-                    </a>
-                </li>
-                <li>
-                    <a>Calendrier</a>
-                </li>
+                <li><a href="{% url 'gardens:detail' slug=garden.slug %}">Home</a></li>
+                <li><a href="{% url 'gardens:activities:index' garden_slug=garden.slug %}">Entretien</a></li>
+                <li><a>Calendrier</a></li>
             </ol>
         </div>
 

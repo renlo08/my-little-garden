@@ -113,7 +113,7 @@ class Garden(models.Model):
 
     objects = GardenManager()
 
-    def has_garden(self):
+    def has_address(self):
         return self.address is not None
 
     def get_last_update(self):
