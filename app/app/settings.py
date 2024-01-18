@@ -32,6 +32,7 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'activities',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'django_htmx',
-    'activities',
     'gardens',
 ]
 

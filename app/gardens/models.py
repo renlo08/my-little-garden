@@ -145,18 +145,6 @@ def post_save_receiver(sender, instance, created: bool, *args, **kwargs):
         utils.slugify_instance_name(instance, save=True)
 
 
-class Activity(models.Model):
-    FERTILIZE = "F"
-    PLANTATION = 'P'
-    TAILLE = 'T'
-
-    ACTIVITY_CHOICES = [(FERTILIZE, 'Fertilisation'), (PLANTATION, 'Plantation'), (TAILLE, 'Taille')]
-    activity = models.CharField(max_length=1, choices=ACTIVITY_CHOICES)
-    comment = models.TextField()
-    garden = models.ForeignKey(Garden, on_delete=models.CASCADE, related_name='activites', null=True, blank=True)
-
-    def __str__(self):
-        return self.activity
 
 
 class FertilizationInline(models.Model):

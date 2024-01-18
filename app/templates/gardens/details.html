@@ -6,7 +6,9 @@
         <div class="bg-green-200 basis-1/12">
             <ol>
                 <li>
-                    Entretien
+                    <a href="{% url 'gardens:activities:index' garden_slug=garden.slug%}">
+                        Entretien
+                    </a>
                 </li>
 
                 <li>Calendrier</li>
@@ -27,7 +29,11 @@
                 <div>{{ garden.description }}</div>
             </div>
 
-            <div class="bg-orange-600">Une autre div pas utilisé pour le moment</div>
+            <div class="bg-orange-600">
+                {% block garden_detail_content %}
+                    <p>Une autre div pas utilisé pour le moment</p>
+                {% endblock garden_detail_content %}
+            </div>
         </div>
 
 

@@ -25,7 +25,6 @@ urlpatterns = [
     path('accounts/', include('accounts.urls'), name='accounts'),
     path('admin/', admin.site.urls),
     path('gardens/', include('gardens.urls'), name='gardens'),
-    path('activities/', include('activities.urls'), name='activities')
 ]
 
 if settings.DEBUG:

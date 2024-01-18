@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
-from gardens.forms import GardenForm, FertilizationForm
-from gardens.models import Garden, FertilizationInline, Activity
+from gardens.forms import GardenForm
+from gardens.models import Garden
 
 
 class GardenFormView(CreateView):
@@ -17,53 +17,6 @@ class GardenFormView(CreateView):
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
-
-
-@login_required
-def garden_create_view(request):
-    form = GardenForm(request.POST or None)
-    context = {
-        'form': form
-    }
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.created_by = request.user
-        obj.save()
-        return redirect(obj.get_absolute_url())
-    return render(request, 'gardens/create-update.html', context=context)
-
-
-@login_required
-def garden_update_view(request, id=None):
-    obj = get_object_or_404(Garden, id=id, created_by=request.user)
-    form = GardenForm(request.POST or None, instance=obj)
-    context = {
-        "form": form,
-        "object": obj,
-    }
-    if form.is_valid():
-        form.save()
-        context['message'] = 'Data saved.'
-    return render(request, "gardens/create-update.html", context)
-
-
-@login_required
-def amendment_update_view(request, garden_slug:str = None, id: int=None):
-    if not request.htmx:
-        raise Http404("HTMX requesst not found.")
-
-    try:
-        garden = Garden.objects.get(slug__exact=garden_slug, created_by=request.user)
-    except Garden.DoesNotExist:
-        raise Http404("Garden not found.")
-
-    try:
-        instance = FertilizationInline.objects.get(garden=garden, id=id)
-    except FertilizationInline.DoesNotExist:
-        return HttpResponse(status=404, content_type="text/plain", content="No Fertilization Information")
-
-    if request.method == "PUT":
-        form = FertilizationForm(request.PUT, instance=instance)
 
 
 class GardenListView(LoginRequiredMixin, ListView):
@@ -129,6 +82,3 @@ def search_garden_view(request):
     context['gardens'] = gardens
     return render(request, "gardens/partials/cards.html", context=context)
 
-
-class ActivitiesView(LoginRequiredMixin, ListView):
-    model = Activity
