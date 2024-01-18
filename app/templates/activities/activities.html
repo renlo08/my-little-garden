@@ -2,5 +2,29 @@
 {% load static %}
 
 {% block garden_detail_content %}
-	<p>This is a test.</p>
+    <div>
+        <h1>Fertilisation</h1>
+        {% if activities %}
+            <table>
+                <thead>
+                <tr>
+                    <th>catégorie</th>
+                    <th>quantité</th>
+                    <th>actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for activity in activities %}
+                    <tr>
+                        <th>{{ activity.activity }}</th>
+                        <td>{{ activity.get_quantity }}</td>
+                        <td>TODO (...)</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Pas de fertilisation</p>
+        {% endif %}
+    </div>
 {% endblock %}
