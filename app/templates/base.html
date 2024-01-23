@@ -21,11 +21,11 @@
 <body class="flex flex-col min-h-screen font-body bg-gray-50 text-gray-600">
 
 <header class="bg-white">
-    <div class="flex justify-between items-center mr-5">
+    <div class="flex justify-between items-center mr-5 h-16">
 
         <!-- Logo-->
         <a href="{% url 'home' %}">
-            <img class="w-28 rounded-full ml-5"
+            <img class="w-16 rounded-full ml-5"
                  src="{% static 'img/logo.png' %}"
                  alt="MyLittleGarden">
         </a>
@@ -36,14 +36,14 @@
 </header>
 
 <!-- main and page content -->
-<main class="flex-grow">
+<main class="flex-grow flex flex-col">
 
     {% block content %}
         <h3>This will be replaced</h3>
     {% endblock content %}
 </main>
 
-<footer class="basis-1/6 text-center text-white p-8 bg-green-500">placeholder footer</footer>
+<footer class="h-16 text-center text-white p-8 bg-green-500">placeholder footer</footer>
 
 
 <script>
