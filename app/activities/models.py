@@ -1,6 +1,7 @@
 # Create your models here.
 import pint
 from django.db import models
+from django.urls import reverse
 
 from activities.validators import validate_unit_measurement
 from app.utils import compute_time_difference
@@ -60,6 +61,9 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.activity
+
+    def get_absolute_url(self):
+        return reverse('gardens:activities:description', kwargs={'garden_slug': self.garden.slug, 'pk':self.pk})
 
     def get_creation_date(self):
         return self.creation.strftime('%d.%m.%y')

@@ -1,13 +1,15 @@
-<table class="grid grid-cols-3 gap-5">
+<table class="table-auto">
     <tr>
-        <td><span>type: </span><span>not-defined</span></td>
-        <td><span>type: </span><span>not-defined</span></td>
-        <td><span>type: </span><span>not-defined</span></td>
+        <td class="p-2"><span>Date d´exécution: </span><span>{{ activity.get_creation_date }}</span></td>
+        <td><span>Type: </span><span>{{ activity.activity }}</span></td>
     </tr>
     <tr>
-        <td><span>type: </span><span>not-defined</span></td>
-        <td><span>type: </span><span>not-defined</span></td>
-        <td><span>type: </span><span>not-defined</span></td>
+        <td class="p-2"><span>Mis à jour: </span><span>{{ activity.get_updated_date }}</span></td>
+
+        <td><span>Quantité: </span><span>{{ activity.fertilization.as_mks }}</span></td>
+    </tr>
+    <tr>
+        <td colspan="2" class="p-2 max-w-md"><span>Notes: </span><span>{{ activity.comment }}</span></td>
     </tr>
     <!-- more rows as needed -->
 </table>
