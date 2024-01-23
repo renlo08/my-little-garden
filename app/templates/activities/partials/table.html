@@ -1,23 +1,23 @@
 <div class="h-200 overflow-y-scroll m-4">
-    <table class="p-4 w-3/5">
-        <thead class="capitalize">
-        <tr class="text-left">
-            <th scope="col">date</th>
-            <th scope="col">updated</th>
-            <th scope="col">catégorie</th>
-            <th scope="col">quantité</th>
-            <th scope="col">actions</th>
+    <table class="table p-4 w-3/5">
+        <thead class="capitalize table-header-group">
+        <tr class="text-left table-row">
+            <th scope="col" class="table-cell">date</th>
+            <th scope="col" class="table-cell">updated</th>
+            <th scope="col" class="table-cell">catégorie</th>
+            <th scope="col" class="table-cell">quantité</th>
+            <th scope="col" class="table-cell">actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class="table-row-group">
         {% for object in objects %}
-            <tr class="hover:bg-gray-100 hover:border-l-4 hover:border-emerald-700">
-                <td>{{ object.get_creation_date }}</td>
-                <td><p>{{ object.get_updated_date }}</p>
+            <tr hx-get="" hx-swap="outerHTML" hx-target="#activity-description" class="table-row hover:bg-gray-100 hover:border-l-4 hover:border-emerald-700">
+                <td class="table-cell">{{ object.get_creation_date }}</td>
+                <td class="table-cell"><p>{{ object.get_updated_date }}</p>
                     <p class="text-xs pl-2">{{ object.since_update }}</p></td>
-                <td>{{ object.get_activity_display }}</td>
-                <td>{{ object.get_quantity }}</td>
-                <td>
+                <td class="table-cell">{{ object.get_activity_display }}</td>
+                <td class="table-cell">{{ object.get_quantity }}</td>
+                <td class="table-cell">
                     <div class="flex">
                         <a class="text-blue-600 mr-2">
                             <svg class="w-5 h-5" data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor"

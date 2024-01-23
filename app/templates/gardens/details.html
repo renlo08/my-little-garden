@@ -4,11 +4,15 @@
     <div class="flex-grow flex flex-row">
 
         <ol class="cursor-pointer bg-green-200 p-4 w-36">
-            <li class="hover:text-gray-800 hover:text-xl"><a href="{% url 'gardens:detail' slug=garden.slug %}">Home</a>
+            <li class="hover:text-gray-800 hover:text-xl">
+                <a href="{% url 'gardens:detail' slug=garden.slug %}">Home</a>
             </li>
-            <li class="hover:text-gray-800 hover:text-xl"><a
-                    href="{% url 'gardens:activities:index' garden_slug=garden.slug %}">Entretien</a></li>
-            <li class="hover:text-gray-800 hover:text-xl"><a>Calendrier</a></li>
+            <li class="hover:text-gray-800 hover:text-xl">
+                <a href="{% url 'gardens:activities:index' garden_slug=garden.slug %}">Entretien</a>
+            </li>
+            <li class="hover:text-gray-800 hover:text-xl">
+                <a>Calendrier</a>
+            </li>
         </ol>
 
         <div id="detail-content" class="w-full bg-green-600">

@@ -7,3 +7,10 @@
 .garden-card{
   @apply rounded bg-white border-gray-200 shadow-md overflow-hidden relative cursor-pointer;
 }
+
+.details-field-extern{
+  @apply flex justify-center items-center bg-slate-200 rounded-md
+}
+.details-field-intern{
+  @apply m-4 bg-white rounded-md flex-grow
+}

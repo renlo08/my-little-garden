@@ -6,10 +6,11 @@ from app import utils
 app_name = 'activities'
 
 urlpatterns = [
-    path('', views.ActivityDetailView.as_view(), name='index')
+    path('', views.ActivityListView.as_view(), name='index')
 ]
 
 htmx_urlpatterns = [
+    path('description/', views.ActivityDescriptionView.as_view(), name='description')
 ]
 
 urlpatterns = utils.arrange_urlpatterns(urlpatterns + htmx_urlpatterns)
